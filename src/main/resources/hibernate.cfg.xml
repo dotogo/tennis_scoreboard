@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <!-- JDBC connection -->
+    <!-- Basic connection settings -->
     <property name="connection.driver_class">org.h2.Driver</property>
     <property name="connection.url">jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1</property>
     <property name="connection.username">sa</property>
@@ -12,6 +12,15 @@
 
     <!-- Hibernate dialect -->
     <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+
+    <!-- HikariCP connection provider settings -->
+    <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
+
+    <!-- HikariCP pool parameters -->
+    <property name="hibernate.hikari.connectionTimeout">30000</property>
+    <property name="hibernate.hikari.maximumPoolSize">10</property>
+    <property name="hibernate.hikari.minimumIdle">1</property>
+    <property name="hibernate.hikari.idleTimeout">10000</property>
 
     <!-- Automatic table creation -->
     <property name="hibernate.hbm2ddl.auto">update</property>

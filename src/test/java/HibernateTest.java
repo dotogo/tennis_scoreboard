@@ -1,5 +1,4 @@
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 import org.proj4.tennis_scoreboard.entity.Match;
 import org.proj4.tennis_scoreboard.entity.Player;
