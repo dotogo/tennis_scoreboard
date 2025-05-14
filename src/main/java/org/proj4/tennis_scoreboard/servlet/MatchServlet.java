@@ -8,12 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet
+@WebServlet("/new-match")
 public class MatchServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.
-//        super.doPost(req, resp);
+
+
+
     }
 }
