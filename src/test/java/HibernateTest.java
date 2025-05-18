@@ -1,4 +1,5 @@
 import org.hibernate.Session;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.proj4.tennis_scoreboard.entity.Match;
 import org.proj4.tennis_scoreboard.entity.Player;
@@ -8,11 +9,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class HibernateTest {
 
+    @BeforeEach
+    public void cleanup() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.createMutationQuery("DELETE FROM Match").executeUpdate();
+            session.createMutationQuery("DELETE FROM Player").executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
     @Test
     public void testSaveAndGetPlayer() {
+        Player player = new Player();
+        player.setName("Novak Djokovic");
+
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Player player = new Player();
-            player.setName("Novak Djokovic");
             session.beginTransaction();
             session.persist(player);
             session.getTransaction().commit();
@@ -20,10 +32,10 @@ public class HibernateTest {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
-            Player savedPlayer = session.get(Player.class, 1);
+            Player savedPlayer = session.get(Player.class, player.getId());
 
             assertThat(savedPlayer.getName()).isEqualTo("Novak Djokovic");
-            assertThat(savedPlayer.getId()).isEqualTo(1);
+            assertThat(savedPlayer.getId()).isEqualTo(player.getId());
 
             System.out.println("Player saved with id: " + savedPlayer.getId());
 

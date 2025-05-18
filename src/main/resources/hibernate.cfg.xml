@@ -11,10 +11,11 @@
     <property name="connection.password"></property>
 
     <!-- Hibernate dialect -->
-    <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+<!--    <property name="dialect">org.hibernate.dialect.H2Dialect</property>-->
 
     <!-- HikariCP connection provider settings -->
-    <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>
+<!--    <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>-->
+    <property name="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property>
 
     <!-- HikariCP pool parameters -->
     <property name="hibernate.hikari.connectionTimeout">30000</property>
@@ -24,6 +25,7 @@
 
     <!-- Automatic table creation -->
     <property name="hibernate.hbm2ddl.auto">update</property>
+<!--    <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
 
     <!-- Output SQL to console -->
     <property name="show_sql">true</property>

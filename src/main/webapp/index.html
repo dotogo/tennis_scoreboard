@@ -2,10 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tennis Scoreboard</title>
 </head>
 <body>
-Hello World!
+<h1>New Match</h1>
 
+<form action="/new-match" method="post">
+    <div>
+        <label for="first-player">Player 1 Name:</label>
+        <input type="text" id="first-player" name="first-player" required>
+    </div>
+
+    <div>
+        <label for="second-player">Player 2 Name:</label>
+        <input type="text" id="second-player" name="second-player" required>
+    </div>
+
+    <button type="submit">Start Match</button>
+</form>
 </body>
 </html>

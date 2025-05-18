@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.dao.PlayerDao;
+import org.proj4.tennis_scoreboard.entity.Player;
 
 import java.io.IOException;
 import java.util.Map;
@@ -20,6 +21,9 @@ public class MatchServlet extends BaseServlet {
     private static final String FIRST_PLAYER_EMPTY = "First player name cannot be empty.";
     private static final String SECOND_PLAYER_EMPTY = "Second player name cannot be empty.";
     private static final String SAME_PLAYER_NAMES = "Player names cannot be the same.";
+
+    public static final String ATTR_FIRST_PLAYER = "firstPlayer";
+    public static final String ATTR_SECOND_PLAYER = "secondPlayer";
 
     private final PlayerDao playerDao = new PlayerDao();
 
@@ -51,7 +55,29 @@ public class MatchServlet extends BaseServlet {
             return;
         }
 
+        try {
+            Player first = playerDao.findByName(firstPlayer)
+                    .orElseGet(() -> {
+                        Player newPlayer = new Player();
+                        newPlayer.setName(firstPlayer);
+                        playerDao.save(newPlayer);
+                        return newPlayer;
+                    });
+            req.setAttribute(ATTR_FIRST_PLAYER, first);
 
+            Player second = playerDao.findByName(secondPlayer)
+                    .orElseGet(() -> {
+                        Player newPlayer = new Player();
+                        newPlayer.setName(secondPlayer);
+                        playerDao.save(newPlayer);
+                        return newPlayer;
+                    });
+            req.setAttribute(ATTR_SECOND_PLAYER, second);
+            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);
+
+        } catch (Exception e) {
+            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+        }
 
     }
 }
