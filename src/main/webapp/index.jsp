@@ -23,5 +23,6 @@
     <button type="submit" class="btn-submit">Start Match</button>
 </form>
 
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>
