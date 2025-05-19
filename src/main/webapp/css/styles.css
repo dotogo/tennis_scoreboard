@@ -1,0 +1,42 @@
+/* Styles for field containers */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Styles for labels (label) */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Styles for text fields */
+/*.form-group input[type="text"] {*/
+/*    width: 100%;*/
+/*    padding: 8px;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*}*/
+.form-group input[type="text"] {
+    width: 300px;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Стили для кнопки */
+.btn-submit {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #45a049; /* Dark green on hover */
+}
