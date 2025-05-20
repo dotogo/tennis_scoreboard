@@ -6,8 +6,8 @@
 
 <h1>Players</h1>
 <body>
-    <h1>Player 1: ${firstPlayer.name}</h1>
-    <h1>Player 2: ${secondPlayer.name}</h1>
+    <h1>Player 1: ${firstPlayer.name}, player id: ${firstPlayer.id}</h1>
+    <h1>Player 2: ${secondPlayer.name}, player id: ${secondPlayer.id}</h1>
 
 </body>
 </html>
