@@ -2,27 +2,26 @@ package org.proj4.tennis_scoreboard.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import org.proj4.tennis_scoreboard.entity.Match;
-import org.proj4.tennis_scoreboard.entity.MatchScore;
+import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 
 import java.util.UUID;
 
 public class OngoingMatchesService {
-    private final Cache<UUID, MatchScore> ongoingMatches = Caffeine.newBuilder().build();
+    private final Cache<UUID, OngoingMatch> ongoingMatches = Caffeine.newBuilder().build();
 
-    public Match getMatch(UUID id) {
-        MatchScore matchScore = ongoingMatches.getIfPresent(id);
+    public OngoingMatch getMatch(UUID id) {
+        OngoingMatch ongoingMatch = ongoingMatches.getIfPresent(id);
 
-        if (matchScore != null) {
-            return matchScore.getMatch();
+        if (ongoingMatch != null) {
+            return ongoingMatch;
         }
         //TODO make custom exception
         throw new RuntimeException();
     }
 
-    public UUID addMatch(MatchScore matchScore) {
+    public UUID addMatch(OngoingMatch ongoingMatch) {
         UUID id = UUID.randomUUID();
-        ongoingMatches.put(id, matchScore);
+        ongoingMatches.put(id, ongoingMatch);
         return id;
     }
 
