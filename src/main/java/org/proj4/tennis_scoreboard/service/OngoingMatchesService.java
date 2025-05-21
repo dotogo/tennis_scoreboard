@@ -7,7 +7,7 @@ import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 import java.util.UUID;
 
 public class OngoingMatchesService {
-    private final Cache<UUID, OngoingMatch> ongoingMatches = Caffeine.newBuilder().build();
+    private static final Cache<UUID, OngoingMatch> ongoingMatches = Caffeine.newBuilder().build();
 
     public OngoingMatch getMatch(UUID id) {
         OngoingMatch ongoingMatch = ongoingMatches.getIfPresent(id);
@@ -16,7 +16,7 @@ public class OngoingMatchesService {
             return ongoingMatch;
         }
         //TODO make custom exception
-        throw new RuntimeException();
+        throw new RuntimeException("ongoingMatch is null");
     }
 
     public UUID addMatch(OngoingMatch ongoingMatch) {
@@ -24,6 +24,4 @@ public class OngoingMatchesService {
         ongoingMatches.put(id, ongoingMatch);
         return id;
     }
-
-
 }

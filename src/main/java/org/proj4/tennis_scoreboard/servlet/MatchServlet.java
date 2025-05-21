@@ -8,6 +8,7 @@ import org.proj4.tennis_scoreboard.dao.PlayerDao;
 import org.proj4.tennis_scoreboard.entity.MatchScore;
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 import org.proj4.tennis_scoreboard.entity.Player;
+import org.proj4.tennis_scoreboard.entity.Point;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class MatchServlet extends BaseServlet {
                         playerDao.save(newPlayer);
                         return newPlayer;
                     });
-            req.setAttribute(ATTR_FIRST_PLAYER, first);
+//            req.setAttribute(ATTR_FIRST_PLAYER, first);
 
             Player second = playerDao.findByName(secondPlayer)
                     .orElseGet(() -> {
@@ -79,7 +80,7 @@ public class MatchServlet extends BaseServlet {
                         playerDao.save(newPlayer);
                         return newPlayer;
                     });
-            req.setAttribute(ATTR_SECOND_PLAYER, second);
+//            req.setAttribute(ATTR_SECOND_PLAYER, second);
 //            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);
 
             OngoingMatch ongoingMatch = new OngoingMatch(first, second, new MatchScore());
