@@ -16,7 +16,7 @@ import java.util.UUID;
 public class MatchScoreServlet extends BaseServlet {
     private static final String PARAM_UUID = "uuid";
     private static final String ATTR_MATCH = "match";
-    private static final String POINT_SCORER = "point-scorer";
+    private static final String POINT_WINNER = "point-winner";
     private static final String INVALID_UUID = "Invalid UUID";
 
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
@@ -53,9 +53,9 @@ public class MatchScoreServlet extends BaseServlet {
         UUID uuid = UUID.fromString(uuidFromParameter);
         OngoingMatch match = ongoingMatchesService.getMatch(uuid);
 
-        String pointScorer = req.getParameter(POINT_SCORER);
+        String pointWinner = req.getParameter(POINT_WINNER);
 
-        matchScoreCalculationService.updateMatchScore(match, pointScorer);
+        matchScoreCalculationService.updateMatchScore(match, pointWinner);
 
         if (matchScoreCalculationService.isFinishedMatch(match)) {
             finishedMatchesPersistenceService.persistMatch(match);

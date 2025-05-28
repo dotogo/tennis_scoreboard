@@ -10,5 +10,6 @@ import lombok.Setter;
 public class OngoingMatch {
     private Player firstPlayer;
     private Player secondPlayer;
-    private MatchScore matchScore;
+    private PlayerScore firstPlayerScore;
+    private PlayerScore secondPlayerScore;
 }

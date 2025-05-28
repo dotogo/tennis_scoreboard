@@ -5,10 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.dao.PlayerDao;
-import org.proj4.tennis_scoreboard.entity.MatchScore;
-import org.proj4.tennis_scoreboard.entity.OngoingMatch;
-import org.proj4.tennis_scoreboard.entity.Player;
-import org.proj4.tennis_scoreboard.entity.Point;
+import org.proj4.tennis_scoreboard.entity.*;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 
 import java.io.IOException;
@@ -83,7 +80,7 @@ public class MatchServlet extends BaseServlet {
 //            req.setAttribute(ATTR_SECOND_PLAYER, second);
 //            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);
 
-            OngoingMatch ongoingMatch = new OngoingMatch(first, second, new MatchScore());
+            OngoingMatch ongoingMatch = new OngoingMatch(first, second, new PlayerScore(), new PlayerScore());
             UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
 
 //            resp.sendRedirect("/match-score?uuid=" + uuid.toString());

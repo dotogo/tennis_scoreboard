@@ -55,24 +55,24 @@
         </tr>
         <tr>
             <td>${match.firstPlayer.name}</td>
-            <td>${match.matchScore.setsFirstPlayer}</td>
-            <td>${match.matchScore.gamesFirstPlayer}</td>
-            <td>${match.matchScore.pointsFirstPlayer.value}</td>
+            <td>${match.firstPlayerScore.sets}</td>
+            <td>${match.firstPlayerScore.games}</td>
+            <td>${match.firstPlayerScore.points.value}</td>
             <td>
                 <form class="action-form" method="post" action="<c:url value='/match-score?uuid=${param.uuid}'/>">
-                    <input type="hidden" name="point-scorer" value="player1">
+                    <input type="hidden" name="point-winner" value="player1">
                     <button type="submit" class="action-button">+ Point</button>
                 </form>
             </td>
         </tr>
         <tr>
             <td>${match.secondPlayer.name}</td>
-            <td>${match.matchScore.setsSecondPlayer}</td>
-            <td>${match.matchScore.gamesSecondPlayer}</td>
-            <td>${match.matchScore.pointsSecondPlayer.value}</td>
+            <td>${match.secondPlayerScore.sets}</td>
+            <td>${match.secondPlayerScore.games}</td>
+            <td>${match.secondPlayerScore.points.value}</td>
             <td>
                 <form class="action-form" method="post" action="<c:url value='/match-score?uuid=${param.uuid}'/>">
-                    <input type="hidden" name="point-scorer" value="player2">
+                    <input type="hidden" name="point-winner" value="player2">
                     <button type="submit" class="action-button">+ Point</button>
                 </form>
             </td>
