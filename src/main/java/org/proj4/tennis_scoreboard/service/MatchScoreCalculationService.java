@@ -15,17 +15,24 @@ public class MatchScoreCalculationService {
         // update score
         System.out.println("Match score calculation. Add point: " + pointWinner);
 
+        String unexpectedPointWinner = POINT_WINNER_ERROR.formatted(pointWinner, POINT_WINNER_PLAYER1, POINT_WINNER_PLAYER2);
+
         PlayerScore winnerPlayerScore = switch (pointWinner) {
             case POINT_WINNER_PLAYER1 -> match.getFirstPlayerScore();
             case POINT_WINNER_PLAYER2 -> match.getSecondPlayerScore();
-            default -> throw new IllegalStateException(POINT_WINNER_ERROR.formatted(pointWinner, POINT_WINNER_PLAYER1, POINT_WINNER_PLAYER2));
+            default -> throw new IllegalStateException(unexpectedPointWinner);
         };
 
         PlayerScore opponentScore = switch (pointWinner) {
             case POINT_WINNER_PLAYER1 -> match.getSecondPlayerScore();
             case POINT_WINNER_PLAYER2 -> match.getFirstPlayerScore();
-            default -> throw new IllegalStateException(POINT_WINNER_ERROR.formatted(pointWinner, POINT_WINNER_PLAYER1, POINT_WINNER_PLAYER2));
+            default -> throw new IllegalStateException(unexpectedPointWinner);
         };
+
+        if (isBackToDeuceFromAdvantage(winnerPlayerScore, opponentScore)) {
+            backToDeuce(opponentScore);
+            return;
+        }
 
         if (!isGameWon(winnerPlayerScore, opponentScore)) {
             incrementPoint(winnerPlayerScore);
@@ -145,6 +152,17 @@ public class MatchScoreCalculationService {
 
     private boolean isDeuce(Point winnerPoints, Point opponentPoints) {
         return Point.FORTY.equals(winnerPoints) && Point.FORTY.equals(opponentPoints);
+    }
+
+    private boolean isBackToDeuceFromAdvantage(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
+        Point winnerPoints = winnerPlayerScore.getPoints();
+        Point opponentPoints = opponentScore.getPoints();
+
+        return Point.FORTY.equals(winnerPoints) && Point.AD.equals(opponentPoints);
+    }
+
+    private void backToDeuce(PlayerScore opponentScore) {
+        opponentScore.setPoints(Point.FORTY);
     }
 
 }
