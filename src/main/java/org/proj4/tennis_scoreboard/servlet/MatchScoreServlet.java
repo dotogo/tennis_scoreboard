@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
+import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import org.proj4.tennis_scoreboard.service.FinishedMatchesPersistenceService;
 import org.proj4.tennis_scoreboard.service.MatchScoreCalculationService;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class MatchScoreServlet extends BaseServlet {
     private static final String PARAM_UUID = "uuid";
     private static final String ATTR_MATCH = "match";
-    private static final String POINT_WINNER = "point-winner";
+    private static final String PARAM_POINT_WINNER = "point-winner";
     private static final String INVALID_UUID = "Invalid UUID";
 
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
@@ -53,13 +54,15 @@ public class MatchScoreServlet extends BaseServlet {
         UUID uuid = UUID.fromString(uuidFromParameter);
         OngoingMatch match = ongoingMatchesService.getMatch(uuid);
 
-        String pointWinner = req.getParameter(POINT_WINNER);
+        String pointWinner = req.getParameter(PARAM_POINT_WINNER);
 
         matchScoreCalculationService.updateMatchScore(match, pointWinner);
 
-        if (matchScoreCalculationService.isFinishedMatch(match)) {
+        PlayerScore firstPlayerScore = match.getFirstPlayerScore();
+
+        if (matchScoreCalculationService.isFinishedMatch(firstPlayerScore)) {
             finishedMatchesPersistenceService.persistMatch(match);
-            resp.getWriter().write("Match finished");
+            resp.getWriter().write("Match finished"); // TODO make response
             return;
         }
 
