@@ -59,8 +59,9 @@ public class MatchScoreServlet extends BaseServlet {
         matchScoreCalculationService.updateMatchScore(match, pointWinner);
 
         PlayerScore firstPlayerScore = match.getFirstPlayerScore();
+        PlayerScore secondPlayerScore = match.getSecondPlayerScore();
 
-        if (matchScoreCalculationService.isFinishedMatch(firstPlayerScore)) {
+        if (matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore)) {
             finishedMatchesPersistenceService.persistMatch(match);
             resp.getWriter().write("Match finished"); // TODO make response
             return;

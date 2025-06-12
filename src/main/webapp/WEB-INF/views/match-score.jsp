@@ -57,7 +57,16 @@
             <td>${match.firstPlayer.name}</td>
             <td>${match.firstPlayerScore.sets}</td>
             <td>${match.firstPlayerScore.games}</td>
-            <td>${match.firstPlayerScore.points.value}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${match.firstPlayerScore.tieBreak > 0}">
+                        ${match.firstPlayerScore.tieBreak}
+                    </c:when>
+                    <c:otherwise>
+                        ${match.firstPlayerScore.points.value}
+                    </c:otherwise>
+                </c:choose>
+            </td>
             <td>
                 <form class="action-form" method="post" action="<c:url value='/match-score?uuid=${param.uuid}'/>">
                     <input type="hidden" name="point-winner" value="player1">
@@ -69,7 +78,16 @@
             <td>${match.secondPlayer.name}</td>
             <td>${match.secondPlayerScore.sets}</td>
             <td>${match.secondPlayerScore.games}</td>
-            <td>${match.secondPlayerScore.points.value}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${match.secondPlayerScore.tieBreak > 0}">
+                        ${match.secondPlayerScore.tieBreak}
+                    </c:when>
+                    <c:otherwise>
+                        ${match.secondPlayerScore.points.value}
+                    </c:otherwise>
+                </c:choose>
+            </td>
             <td>
                 <form class="action-form" method="post" action="<c:url value='/match-score?uuid=${param.uuid}'/>">
                     <input type="hidden" name="point-winner" value="player2">

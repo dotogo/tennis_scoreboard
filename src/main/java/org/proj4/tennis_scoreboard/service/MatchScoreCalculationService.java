@@ -29,20 +29,25 @@ public class MatchScoreCalculationService {
             default -> throw new IllegalStateException(unexpectedPointWinner);
         };
 
-        if (isBackToDeuceFromAdvantage(winnerPlayerScore, opponentScore)) {
-            backToDeuce(opponentScore);
-            return;
-        }
-
-        if (!isGameWon(winnerPlayerScore, opponentScore)) {
-            incrementPoint(winnerPlayerScore);
+        if (isTieBreakWillBeWon(winnerPlayerScore, opponentScore)) {
+            incrementSet(winnerPlayerScore, opponentScore);
             return;
         }
 
         if (isTieBreak(winnerPlayerScore, opponentScore)) {
             incrementTieBreak(winnerPlayerScore, opponentScore);
-        } else {
+            return;
+        }
+
+        if (isBackToDeuceFromAdvantage(winnerPlayerScore, opponentScore)) {
+            backToDeuce(opponentScore);
+            return;
+        }
+
+        if (isGameWon(winnerPlayerScore, opponentScore)) {
             incrementGame(winnerPlayerScore, opponentScore);
+        } else {
+            incrementPoint(winnerPlayerScore);
         }
 
         if (isSetWon(winnerPlayerScore, opponentScore)) {
@@ -57,8 +62,8 @@ public class MatchScoreCalculationService {
 
     }
 
-    public boolean isFinishedMatch(PlayerScore winnerPlayerScore) {
-        return winnerPlayerScore.getSets() == 2;
+    public boolean isFinishedMatch(PlayerScore firstPlayerScore, PlayerScore secondPlayerScore) {
+        return firstPlayerScore.getSets() == 2 || secondPlayerScore.getSets() == 2;
     }
 
     private void incrementPoint(PlayerScore winnerPlayerScore) {
@@ -81,33 +86,35 @@ public class MatchScoreCalculationService {
     }
 
     private void incrementGame(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
-        if (isGameWon(winnerPlayerScore, opponentScore) && !isTieBreak(winnerPlayerScore, opponentScore)) {
+        winnerPlayerScore.setGames(winnerPlayerScore.getGames() + 1);
 
-            winnerPlayerScore.setGames(winnerPlayerScore.getGames() + 1);
+        winnerPlayerScore.setPoints(Point.LOVE);
+        opponentScore.setPoints(Point.LOVE);
 
-            winnerPlayerScore.setPoints(Point.LOVE);
-            opponentScore.setPoints(Point.LOVE);
-        }
+        winnerPlayerScore.setTieBreak(0);
+        opponentScore.setTieBreak(0);
     }
 
     private void incrementSet(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
         winnerPlayerScore.setSets(winnerPlayerScore.getSets() + 1);
+
+        winnerPlayerScore.setPoints(Point.LOVE);
+        opponentScore.setPoints(Point.LOVE);
 
         winnerPlayerScore.setGames(0);
         opponentScore.setGames(0);
 
         winnerPlayerScore.setTieBreak(0);
         opponentScore.setTieBreak(0);
-
-//        winnerPlayerScore.setPoints(Point.LOVE);
-//        opponentScore.setPoints(Point.LOVE);
     }
 
-//    private void incrementTieBreak(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
-//        if (isTieBreak(winnerPlayerScore, opponentScore)) {
-//            winnerPlayerScore.setTieBreak(winnerPlayerScore.getTieBreak() + 1);
-//        }
-//    }
+    private boolean isTieBreakWillBeWon(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
+        int winnerTieBreak = winnerPlayerScore.getTieBreak();
+        int opponentTieBreak = opponentScore.getTieBreak();
+
+
+        return (winnerTieBreak >= 6) && ((winnerTieBreak - opponentTieBreak) >= 1);
+    }
 
     private boolean isGameWon(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
         Point winnerPoints = winnerPlayerScore.getPoints();
@@ -132,7 +139,7 @@ public class MatchScoreCalculationService {
         int opponentTieBreak = opponentScore.getTieBreak();
 
 
-        if (isTieBreak(winnerPlayerScore, opponentScore) && ((winnerTieBreak - opponentTieBreak) == 2)) {
+        if ((winnerTieBreak >= 7) && (opponentTieBreak >= 7) && ((winnerTieBreak - opponentTieBreak) == 2)) {
             return true;
         }
 
@@ -143,11 +150,7 @@ public class MatchScoreCalculationService {
         int winnerGames = winnerPlayerScore.getGames();
         int opponentGames = opponentScore.getGames();
 
-        return winnerGames >= 6 && opponentGames >= 6;
-    }
-
-    private boolean isAtLeastFortyPoints() {
-        return false;
+        return winnerGames == 6 && opponentGames == 6;
     }
 
     private boolean isDeuce(Point winnerPoints, Point opponentPoints) {
