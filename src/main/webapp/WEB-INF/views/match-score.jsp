@@ -60,7 +60,7 @@
             <td>
                 <c:choose>
                     <c:when test="${match.firstPlayerScore.tieBreak > 0}">
-                        ${match.firstPlayerScore.tieBreak}
+                        ${match.firstPlayerScore.tieBreak} (TB)
                     </c:when>
                     <c:otherwise>
                         ${match.firstPlayerScore.points.value}
@@ -81,7 +81,7 @@
             <td>
                 <c:choose>
                     <c:when test="${match.secondPlayerScore.tieBreak > 0}">
-                        ${match.secondPlayerScore.tieBreak}
+                        ${match.secondPlayerScore.tieBreak} (TB)
                     </c:when>
                     <c:otherwise>
                         ${match.secondPlayerScore.points.value}
