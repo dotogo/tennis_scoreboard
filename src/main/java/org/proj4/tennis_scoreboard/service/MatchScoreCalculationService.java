@@ -1,8 +1,11 @@
 package org.proj4.tennis_scoreboard.service;
 
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
+import org.proj4.tennis_scoreboard.entity.Player;
 import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import org.proj4.tennis_scoreboard.entity.Point;
+
+import java.util.Optional;
 
 public class MatchScoreCalculationService {
     private static final String POINT_WINNER_PLAYER1 = "player1";
@@ -54,16 +57,26 @@ public class MatchScoreCalculationService {
             incrementSet(winnerPlayerScore, opponentScore);
         }
 
-
-//        if (isFinishedMatch(winnerPlayerScore)) {
-//            // save finished match to database
-//            // delete ongoing match from cache
-//        }
-
     }
 
     public boolean isFinishedMatch(PlayerScore firstPlayerScore, PlayerScore secondPlayerScore) {
         return firstPlayerScore.getSets() == 2 || secondPlayerScore.getSets() == 2;
+    }
+
+    public Optional<Player> getWinner(OngoingMatch ongoingMatch) {
+
+        PlayerScore firstPlayerScore = ongoingMatch.getFirstPlayerScore();
+        PlayerScore secondPlayerScore = ongoingMatch.getSecondPlayerScore();
+
+        if (firstPlayerScore.getSets() == 2) {
+            return Optional.ofNullable(ongoingMatch.getFirstPlayer());
+        }
+
+        if (secondPlayerScore.getSets() == 2) {
+            return Optional.ofNullable(ongoingMatch.getSecondPlayer());
+        }
+
+        return Optional.empty();
     }
 
     private void incrementPoint(PlayerScore winnerPlayerScore) {

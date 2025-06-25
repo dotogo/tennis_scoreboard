@@ -24,4 +24,8 @@ public class OngoingMatchesService {
         ongoingMatches.put(id, ongoingMatch);
         return id;
     }
+
+    public void deleteMatch(UUID uuid) {
+        ongoingMatches.invalidate(uuid);
+    }
 }

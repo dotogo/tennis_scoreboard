@@ -63,6 +63,7 @@ public class MatchScoreServlet extends BaseServlet {
 
         if (matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore)) {
             finishedMatchesPersistenceService.persistMatch(match);
+            ongoingMatchesService.deleteMatch(uuid);
 
             req.setAttribute(ATTR_MATCH, match);
             req.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(req, resp);
