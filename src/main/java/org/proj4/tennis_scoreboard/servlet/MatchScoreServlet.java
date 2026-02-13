@@ -48,7 +48,7 @@ public class MatchScoreServlet extends BaseServlet {
         try {
             UUID.fromString(uuidFromParameter);
         } catch (IllegalArgumentException e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, INVALID_UUID);
+            sendErrorResponse(resp, INVALID_UUID);
         }
 
         UUID uuid = UUID.fromString(uuidFromParameter);

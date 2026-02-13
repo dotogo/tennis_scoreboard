@@ -38,7 +38,7 @@ public class MatchServlet extends BaseServlet {
 
         if (!parameterMap.containsKey(PARAM_FIRST_PLAYER) || !parameterMap.containsKey(PARAM_SECOND_PLAYER)) {
 
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, REQUIRED_PARAMETERS_MISSING);
+            sendErrorResponse(resp, REQUIRED_PARAMETERS_MISSING);
             return;
         }
 
@@ -46,17 +46,17 @@ public class MatchServlet extends BaseServlet {
         String secondPlayer = parameterMap.get(PARAM_SECOND_PLAYER)[0];
 
         if (firstPlayer.trim().isEmpty()) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, FIRST_PLAYER_EMPTY);
+            sendErrorResponse(resp, FIRST_PLAYER_EMPTY);
             return;
         }
 
         if (secondPlayer.trim().isEmpty()) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, SECOND_PLAYER_EMPTY);
+            sendErrorResponse(resp, SECOND_PLAYER_EMPTY);
             return;
         }
 
         if (firstPlayer.equals(secondPlayer)) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, SAME_PLAYER_NAMES);
+            sendErrorResponse(resp, SAME_PLAYER_NAMES);
             return;
         }
 
@@ -88,7 +88,7 @@ public class MatchServlet extends BaseServlet {
 
 
         } catch (Exception e) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            sendErrorResponse(resp, e.getMessage());
         }
 
     }

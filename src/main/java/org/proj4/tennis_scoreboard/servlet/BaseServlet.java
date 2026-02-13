@@ -9,11 +9,11 @@ import java.io.IOException;
 
 public class BaseServlet extends HttpServlet {
 
-    protected void sendErrorResponse(HttpServletResponse resp, int status, String message) throws IOException {
+    protected void sendErrorResponse(HttpServletResponse resp, String message) throws IOException {
         ErrorResponse errorResponse = new ErrorResponse(message);
         String json = JsonUtil.toJson(errorResponse);
 
-        resp.setStatus(status);
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         resp.getWriter().write(json);
     }
 

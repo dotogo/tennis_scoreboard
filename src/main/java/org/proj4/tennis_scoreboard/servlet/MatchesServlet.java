@@ -21,7 +21,7 @@ public class MatchesServlet extends BaseServlet {
         Map<String, String[]> parameterMap = req.getParameterMap();
 
         if (!parameterMap.containsKey(PARAM_PAGE) || !parameterMap.containsKey(PARAM_NAME_FILTER)) {
-            sendErrorResponse(resp, HttpServletResponse.SC_BAD_REQUEST, REQUIRED_PARAMETERS_MISSING);
+            sendErrorResponse(resp, REQUIRED_PARAMETERS_MISSING);
             return;
         }
 
