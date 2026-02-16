@@ -3,7 +3,9 @@ package org.proj4.tennis_scoreboard.util;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 @UtilityClass
 public class HibernateUtil {
@@ -11,12 +13,22 @@ public class HibernateUtil {
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
+        StandardServiceRegistry registry = null;
+
         try {
-            Configuration config = new Configuration();
-            config.configure();
-            return config.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError("Initial SessionFactory creation failed " + ex);
+            registry = new StandardServiceRegistryBuilder()
+                    .configure()
+                    .build();
+
+            return new MetadataSources(registry)
+                    .buildMetadata()
+                    .buildSessionFactory();
+
+        } catch (Exception e) {
+            if (registry != null) {
+                StandardServiceRegistryBuilder.destroy(registry);
+            }
+            throw new ExceptionInInitializerError("Initial SessionFactory creation failed " + e);
         }
     }
 }
