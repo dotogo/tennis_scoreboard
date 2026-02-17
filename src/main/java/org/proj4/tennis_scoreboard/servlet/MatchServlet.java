@@ -45,17 +45,17 @@ public class MatchServlet extends BaseServlet {
         String firstPlayer = parameterMap.get(PARAM_FIRST_PLAYER)[0];
         String secondPlayer = parameterMap.get(PARAM_SECOND_PLAYER)[0];
 
-        if (firstPlayer.trim().isEmpty()) {
+        if (firstPlayer == null || firstPlayer.trim().isEmpty()) {
             sendErrorResponse(resp, FIRST_PLAYER_EMPTY);
             return;
         }
 
-        if (secondPlayer.trim().isEmpty()) {
+        if (secondPlayer == null || secondPlayer.trim().isEmpty()) {
             sendErrorResponse(resp, SECOND_PLAYER_EMPTY);
             return;
         }
 
-        if (firstPlayer.equals(secondPlayer)) {
+        if (firstPlayer.trim().equals(secondPlayer.trim())) {
             sendErrorResponse(resp, SAME_PLAYER_NAMES);
             return;
         }
@@ -65,8 +65,7 @@ public class MatchServlet extends BaseServlet {
                     .orElseGet(() -> {
                         Player newPlayer = new Player();
                         newPlayer.setName(firstPlayer);
-                        playerDao.save(newPlayer);
-                        return newPlayer;
+                        return playerDao.save(newPlayer);
                     });
 //            req.setAttribute(ATTR_FIRST_PLAYER, first);
 
@@ -74,8 +73,7 @@ public class MatchServlet extends BaseServlet {
                     .orElseGet(() -> {
                         Player newPlayer = new Player();
                         newPlayer.setName(secondPlayer);
-                        playerDao.save(newPlayer);
-                        return newPlayer;
+                        return playerDao.save(newPlayer);
                     });
 //            req.setAttribute(ATTR_SECOND_PLAYER, second);
 //            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);
