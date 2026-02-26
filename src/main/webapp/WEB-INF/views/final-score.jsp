@@ -1,9 +1,27 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Final score</title>
+    <style>
+        .nav-links {
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+        .nav-links a {
+            display: inline-block;
+            margin-right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .nav-links a:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 <h1>Final score</h1>
@@ -25,6 +43,12 @@
         </c:choose>
     </h2>
 </c:if>
+
+<!-- Adding a block with navigation links -->
+<div class="nav-links">
+    <a href="${pageContext.request.contextPath}/matches">📋 View all matches</a>
+    <a href="${pageContext.request.contextPath}/">🎾 Start new match</a>
+</div>
 
 </body>
 </html>
