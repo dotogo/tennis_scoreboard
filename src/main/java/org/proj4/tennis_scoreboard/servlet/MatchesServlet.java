@@ -1,38 +1,42 @@
 package org.proj4.tennis_scoreboard.servlet;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.proj4.tennis_scoreboard.entity.Match;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 @WebServlet("/matches")
 public class MatchesServlet extends BaseServlet {
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_NAME_FILTER = "filter_by_player_name";
 
-    private static final String REQUIRED_PARAMETERS_MISSING = "One or more parameters have invalid names or are missing. " +
-                                                              "Required parameters: \"%s\", \"%s\"".formatted(PARAM_PAGE, PARAM_NAME_FILTER);
-
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, String[]> parameterMap = req.getParameterMap();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String pageParam = req.getParameter(PARAM_PAGE);
+        String nameParam = req.getParameter(PARAM_NAME_FILTER);
 
-        if (!parameterMap.containsKey(PARAM_PAGE) || !parameterMap.containsKey(PARAM_NAME_FILTER)) {
-            sendErrorResponse(resp, REQUIRED_PARAMETERS_MISSING);
-            return;
+        int page = 1;
+        page = parsePageParameterIfExists(pageParam, resp);
+
+        List<Match> matches = null;
+
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        resp.getWriter().write("Page coming soon. \n Completed matches");
+    }
+
+    private int parsePageParameterIfExists(String pageParam, HttpServletResponse resp) throws IOException {
+        int page = 1;
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam.trim());
+            } catch (NumberFormatException e) {
+                sendErrorResponse(resp, "Page value must be an integer.");
+            }
         }
-
-        String page = parameterMap.get(PARAM_PAGE)[0];
-        String playerName = parameterMap.get(PARAM_NAME_FILTER)[0];
-
-        // TODO make page validation
-        Integer pageValue = Integer.valueOf(page.trim());
-
-        if (page.trim().isEmpty()) {
-            pageValue = 1;
-        }
+        return page;
     }
 }

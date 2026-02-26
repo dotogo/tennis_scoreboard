@@ -34,7 +34,16 @@ public class MatchDao {
             transaction = session.beginTransaction();
 
             int offset = (page - 1) * pageSize;
-            Query<Match> query = session.createQuery("from Match order by id", Match.class);
+
+            String hql = """
+                    select m from Match m
+                    join fetch m.firstPlayer p1
+                    join fetch m.secondPlayer p2
+                    join fetch m.winner winner
+                    order by m.id
+                    
+                    """;
+            Query<Match> query = session.createQuery(hql, Match.class);
             query.setFirstResult(offset);
             query.setMaxResults(pageSize);
 

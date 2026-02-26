@@ -1,5 +1,6 @@
 package org.proj4.tennis_scoreboard.mapper;
 
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.proj4.tennis_scoreboard.dto.MatchDto;
@@ -7,6 +8,7 @@ import org.proj4.tennis_scoreboard.entity.Match;
 
 import java.util.List;
 
+@Mapper
 public interface MatchMapper {
     MatchMapper INSTANCE = Mappers.getMapper(MatchMapper.class);
 
