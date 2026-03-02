@@ -40,6 +40,7 @@
             padding: 0;
         }
     </style>
+    <script src="${pageContext.request.contextPath}/js/match-score.js"></script>
 </head>
 <body>
 <h1>Match Score</h1>
