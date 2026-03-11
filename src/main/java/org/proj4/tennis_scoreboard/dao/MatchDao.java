@@ -90,4 +90,28 @@ public class MatchDao {
         }
         return matches;
     }
+
+    public long countAll() {
+        Transaction transaction = null;
+        long count = 0;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            String hql = "select count(m) from Match m";
+            Query<Long> query = session.createQuery(hql, Long.class);
+            count = query.getSingleResult();
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+
+                // TODO make custom exception
+                throw new RuntimeException("Error while counting all matches", e);
+            }
+        }
+        return count;
+    }
 }
