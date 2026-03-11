@@ -16,6 +16,12 @@ public class PaginatedResult<T> {
     private int currentPage;
     private int totalPages;
     private int totalItems;
-    private boolean hasNextPage;
-    private boolean hasPreviousPage;
+
+    public boolean isHasNextPage() {
+        return currentPage < totalPages;
+    }
+
+    public boolean isHasPreviousPage() {
+        return currentPage > 1;
+    }
 }
