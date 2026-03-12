@@ -91,9 +91,9 @@ public class MatchDao {
         return matches;
     }
 
-    public long countAll() {
+    public int countAll() {
         Transaction transaction = null;
-        long count = 0;
+        Long count = 0L;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
@@ -112,6 +112,6 @@ public class MatchDao {
                 throw new RuntimeException("Error while counting all matches", e);
             }
         }
-        return count;
+        return count.intValue();
     }
 }

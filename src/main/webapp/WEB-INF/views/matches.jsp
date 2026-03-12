@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="match" items="${matches}">
+    <c:forEach var="match" items="${matches.items}">
         <tr>
             <td>${match.firstPlayerName}</td>
             <td>${match.secondPlayerName}</td>
