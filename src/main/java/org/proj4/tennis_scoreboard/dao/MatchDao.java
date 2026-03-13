@@ -63,55 +63,71 @@ public class MatchDao {
     }
 
     public List<Match> findByPlayer(Player player, int page, int pageSize) {
-        Transaction transaction = null;
-        List<Match> matches = List.of();
+        List<Match> matches;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-
             int offset = (page - 1) * pageSize;
-            String hql = "from Match where firstPlayer = :player or secondPlayer = :player order by id";
+
+            String hql = """
+                        select m from Match m
+                        join fetch m.firstPlayer p1
+                        join fetch m.secondPlayer p2
+                        join fetch m.winner winner
+                        where m.firstPlayer.id = :playerId
+                        or m.secondPlayer.id = :playerId
+                        order by m.id
+                        """;
             Query<Match> query = session.createQuery(hql, Match.class);
-            query.setParameter("player", player);
+            query.setParameter("playerId", player.getId());
             query.setFirstResult(offset);
             query.setMaxResults(pageSize);
-
             matches = query.getResultList();
 
-            transaction.commit();
-
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-
                 // TODO make custom exception
-                throw new RuntimeException("Error while finding matches by player", e);
+                String playerName = (player != null) ? player.getName() : "unknown";
+                throw new RuntimeException("Error while finding matches by player: " + playerName, e);
             }
-        }
         return matches;
     }
 
     public int countAll() {
-        Transaction transaction = null;
-        Long count = 0L;
+        Long count;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
 
             String hql = "select count(m) from Match m";
             Query<Long> query = session.createQuery(hql, Long.class);
             count = query.getSingleResult();
 
-            transaction.commit();
-
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-
                 // TODO make custom exception
                 throw new RuntimeException("Error while counting all matches", e);
             }
+
+        return count.intValue();
+    }
+
+    public int countAllByPlayer(Player player) {
+        Long count;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            String hql = """
+                        select count(m) from Match m
+                        where firstPlayer = :player
+                        or secondPlayer = :player
+                        """;
+            Query<Long> query = session.createQuery(hql, Long.class);
+            query.setParameter("player", player);
+            count = query.getSingleResult();
+
+        } catch (Exception e) {
+            // TODO make custom exception
+            String playerName = (player != null) ? player.getName() : "unknown";
+            throw new RuntimeException("Error while counting all matches by player: " + playerName, e);
         }
+
         return count.intValue();
     }
 }

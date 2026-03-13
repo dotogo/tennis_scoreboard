@@ -23,13 +23,18 @@ public class MatchesServlet extends BaseServlet {
         String pageParam = req.getParameter(PARAM_PAGE);
         String nameParam = req.getParameter(PARAM_NAME_FILTER);
 
+        PaginatedResult<MatchDto> matches;
+
         int page = getPageNumber(pageParam);
 
-        PaginatedResult<MatchDto> matches = matchService.getMatchesPaginated(page, PAGE_SIZE);
+        if (nameParam == null || nameParam.isEmpty()) {
+            matches = matchService.getMatchesPaginated(page, PAGE_SIZE);
+        } else {
+            matches = matchService.getMatchesByPlayer(nameParam, page, PAGE_SIZE);
+        }
 
         req.setAttribute("matches", matches);
         req.getRequestDispatcher("/WEB-INF/views/matches.jsp").forward(req, resp);
-
     }
 
     private int getPageNumber(String pageParam)  {
