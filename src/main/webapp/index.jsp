@@ -23,6 +23,10 @@
     <button type="submit" class="btn-submit">Start Match</button>
 </form>
 
+<div class="nav-links">
+    <a href="${pageContext.request.contextPath}/matches">📋 View all matches</a>
+</div>
+
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>
