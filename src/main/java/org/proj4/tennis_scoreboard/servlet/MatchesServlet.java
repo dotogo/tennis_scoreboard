@@ -31,6 +31,7 @@ public class MatchesServlet extends BaseServlet {
             matches = matchService.getMatchesPaginated(page, PAGE_SIZE);
         } else {
             matches = matchService.getMatchesByPlayer(nameParam, page, PAGE_SIZE);
+            req.setAttribute(PARAM_NAME_FILTER, nameParam);
         }
 
         req.setAttribute("matches", matches);
