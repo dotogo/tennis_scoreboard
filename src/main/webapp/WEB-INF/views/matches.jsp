@@ -44,6 +44,54 @@
             </c:forEach>
             </tbody>
         </table>
+
+        <%-- Pagination --%>
+        <nav class="pagination">
+
+                <%-- Previous --%>
+            <c:choose>
+                <c:when test="${matches.hasPreviousPage}">
+                    <a href="?page=${matches.currentPage - 1}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">
+                        &laquo;
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <span class="page-disabled">&laquo;</span>
+                </c:otherwise>
+            </c:choose>
+
+                <%-- Page numbers --%>
+            <c:forEach begin="1" end="${matches.totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${i == matches.currentPage}">
+                        <span class="page-current">${i}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="?page=${i}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+                <%-- Next --%>
+            <c:choose>
+                <c:when test="${matches.hasNextPage}">
+                    <a href="?page=${matches.currentPage + 1}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">
+                        &raquo;
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <span class="page-disabled">&raquo;</span>
+                </c:otherwise>
+            </c:choose>
+
+        </nav>
+
+        <p class="pagination-info">
+            Page ${matches.currentPage} of ${matches.totalPages}
+            (total: ${matches.totalItems})
+        </p>
+
+
     </c:otherwise>
 </c:choose>
 

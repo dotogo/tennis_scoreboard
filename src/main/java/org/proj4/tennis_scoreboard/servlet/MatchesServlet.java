@@ -14,7 +14,7 @@ import java.io.IOException;
 public class MatchesServlet extends BaseServlet {
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_NAME_FILTER = "filter_by_player_name";
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 3;
 
     private final MatchService matchService = new MatchService();
 
