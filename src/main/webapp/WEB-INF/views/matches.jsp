@@ -60,17 +60,17 @@
                 </c:otherwise>
             </c:choose>
 
-                <%-- Page numbers --%>
-            <c:forEach begin="1" end="${matches.totalPages}" var="i">
-                <c:choose>
-                    <c:when test="${i == matches.currentPage}">
-                        <span class="page-current">${i}</span>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="?page=${i}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">${i}</a>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
+                        <%-- Page numbers --%>
+                    <c:forEach var="i" items="${pageRange}">
+                        <c:choose>
+                            <c:when test="${i == matches.currentPage}">
+                                <span class="page-current">${i}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="?page=${i}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">${i}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
 
                 <%-- Next --%>
             <c:choose>
@@ -91,10 +91,8 @@
             (total: ${matches.totalItems})
         </p>
 
-
     </c:otherwise>
 </c:choose>
-
 
 <div class="nav-links">
     <a href="${pageContext.request.contextPath}/">🎾 Start new match</a>
