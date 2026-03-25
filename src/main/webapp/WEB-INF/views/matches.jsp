@@ -6,13 +6,18 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/matches-style.css">
 </head>
 <body>
+<c:set var="baseUrl" value="${pageContext.request.contextPath}/matches" />
+
 <h1>Matches</h1>
 
-<form action="${pageContext.request.contextPath}/matches" method="get">
+<form action="${baseUrl}" method="get">
     <div class="player-selection">
         <input type="text" name="filter_by_player_name" value="<c:out value='${param.filter_by_player_name}'/>" class="filter-field" >
         <input type="hidden" name="page" value="1">
-        <a href="${pageContext.request.contextPath}/matches" class="reset-button">Reset Filter</a>
+        <button type="submit" class="btn btn-primary">
+            🔍 Search
+        </button>
+        <a href="${baseUrl}" class="btn btn-secondary">✖ Reset</a>
     </div>
 </form>
 
@@ -51,7 +56,7 @@
                 <%-- Previous --%>
             <c:choose>
                 <c:when test="${matches.hasPreviousPage}">
-                    <a href="?page=${matches.currentPage - 1}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">
+                    <a href="${baseUrl}?page=${matches.currentPage - 1}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">
                         &laquo;
                     </a>
                 </c:when>
@@ -67,7 +72,7 @@
                                 <span class="page-current">${i}</span>
                             </c:when>
                             <c:otherwise>
-                                <a href="?page=${i}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">${i}</a>
+                                <a href="${baseUrl}?page=${i}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">${i}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
@@ -75,7 +80,7 @@
                 <%-- Next --%>
             <c:choose>
                 <c:when test="${matches.hasNextPage}">
-                    <a href="?page=${matches.currentPage + 1}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">
+                    <a href="${baseUrl}?page=${matches.currentPage + 1}&filter_by_player_name=<c:out value='${filter_by_player_name}'/>">
                         &raquo;
                     </a>
                 </c:when>
