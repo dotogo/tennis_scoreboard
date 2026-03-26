@@ -1,27 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Final score</title>
-    <style>
-        .nav-links {
-            margin-top: 30px;
-            padding: 20px;
-            border-top: 1px solid #ccc;
-        }
-        .nav-links a {
-            display: inline-block;
-            margin-right: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .nav-links a:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
 <h1>Final score</h1>

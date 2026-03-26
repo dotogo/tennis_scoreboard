@@ -1,12 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Matches</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/matches-style.css">
 </head>
 <body>
 <c:set var="baseUrl" value="${pageContext.request.contextPath}/matches" />
+
+<h3>
+    <a href="${pageContext.request.contextPath}/">
+        Tennis Scoreboard
+    </a>
+</h3>
 
 <h1>Matches</h1>
 
@@ -100,7 +108,7 @@
 </c:choose>
 
 <div class="nav-links">
-    <a href="${pageContext.request.contextPath}/">🎾 Start new match</a>
+    <a href="${pageContext.request.contextPath}/new-match">🎾 Start new match</a>
 </div>
 
 </body>

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +8,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-<h1>New Match</h1>
+<h1>Tennis Scoreboard</h1>
 
-<form action="${pageContext.request.contextPath}/new-match" method="post">
-    <div class="form-group">
-        <label for="first-player">Player 1 Name:</label>
-        <input type="text" id="first-player" name="first-player" required>
-    </div>
-
-    <div class="form-group">
-        <label for="second-player">Player 2 Name:</label>
-        <input type="text" id="second-player" name="second-player" required>
-    </div>
-
-    <button type="submit" class="btn-submit">Start Match</button>
-</form>
-
-<div class="nav-links">
-    <a href="${pageContext.request.contextPath}/matches">📋 View all matches</a>
+<div class="scoreboard">
+    <a class="start-new-match" href="${pageContext.request.contextPath}/new-match">Start a new match</a>
+    <a class="match-results" href="${pageContext.request.contextPath}/matches">View match results</a>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>
