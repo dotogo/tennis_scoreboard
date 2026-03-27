@@ -13,6 +13,7 @@
 <div class="scoreboard">
     <a class="start-new-match" href="${pageContext.request.contextPath}/new-match">Start a new match</a>
     <a class="match-results" href="${pageContext.request.contextPath}/matches">View match results</a>
+    <a class="sample-matches" href="${pageContext.request.contextPath}/sample-matches">Add sample matches</a>
 </div>
 
 </body>

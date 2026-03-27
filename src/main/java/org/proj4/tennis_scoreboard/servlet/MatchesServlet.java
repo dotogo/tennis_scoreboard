@@ -16,7 +16,7 @@ import java.util.List;
 public class MatchesServlet extends BaseServlet {
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_NAME_FILTER = "filter_by_player_name";
-    private static final int PAGE_SIZE = 3;
+    private static final int PAGE_SIZE = 5;
     private static final int RANGE_PLUS_MINUS_PAGES_FOR_PAGINATION = 2;
 
     private final MatchService matchService = new MatchService();

@@ -64,7 +64,8 @@ h3 a:hover {
 /* Styles for button */
 .btn-submit,
 .start-new-match,
-.match-results {
+.match-results,
+.sample-matches{
     background-color: #4CAF50;
     color: white;
     padding: 10px 15px;
@@ -76,6 +77,10 @@ h3 a:hover {
 
 .start-new-match {
     background-color: #4fb8ee;
+}
+
+.sample-matches {
+    background-color: lightcoral;
 }
 
 .btn-submit:hover {

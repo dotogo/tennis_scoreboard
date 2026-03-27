@@ -25,6 +25,27 @@ public class MatchDao {
         return match;
     }
 
+    public List<Match> saveAll(List<Match> matches) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            for (Match match : matches) {
+                session.persist(match);
+            }
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            // TODO make custom exception
+            throw new RuntimeException("Error saving matches", e);
+        }
+        return matches;
+    }
+
     public List<Match> getAllMatches(int page, int pageSize) {
         Transaction transaction = null;
         List<Match> matches = List.of();
