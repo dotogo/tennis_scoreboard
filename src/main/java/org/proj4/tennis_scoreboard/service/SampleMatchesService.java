@@ -2,6 +2,8 @@ package org.proj4.tennis_scoreboard.service;
 
 import org.proj4.tennis_scoreboard.dao.MatchDao;
 import org.proj4.tennis_scoreboard.dao.PlayerDao;
+import org.proj4.tennis_scoreboard.dao.impl.MatchDaoImpl;
+import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.entity.Match;
 import org.proj4.tennis_scoreboard.entity.Player;
 
@@ -14,8 +16,8 @@ import java.util.List;
 public class SampleMatchesService {
     private static final String SAMPLE_PLAYER_NAMES = "samplePlayerNames.txt";
 
-    private final MatchDao matchDao = new MatchDao();
-    private final PlayerDao playerDao = new PlayerDao();
+    private final MatchDao matchDao = new MatchDaoImpl();
+    private final PlayerDao playerDao = new PlayerDaoImpl();
 
     public void saveSampleMatches(int numberOfMatches) {
         List<String> playerNames = readPlayerNames(SAMPLE_PLAYER_NAMES);

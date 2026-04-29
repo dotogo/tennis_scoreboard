@@ -4,7 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.proj4.tennis_scoreboard.dao.PlayerDao;
+import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.entity.*;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 
@@ -29,7 +29,7 @@ public class MatchServlet extends BaseServlet {
     public static final String ATTR_FIRST_PLAYER = "firstPlayer";
     public static final String ATTR_SECOND_PLAYER = "secondPlayer";
 
-    private final PlayerDao playerDao = new PlayerDao();
+    private final PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
 
     @Override
@@ -61,19 +61,19 @@ public class MatchServlet extends BaseServlet {
         }
 
         try {
-            Player first = playerDao.findByName(firstPlayer)
+            Player first = playerDaoImpl.findByName(firstPlayer)
                     .orElseGet(() -> {
                         Player newPlayer = new Player();
                         newPlayer.setName(firstPlayer);
-                        return playerDao.save(newPlayer);
+                        return playerDaoImpl.save(newPlayer);
                     });
 //            req.setAttribute(ATTR_FIRST_PLAYER, first);
 
-            Player second = playerDao.findByName(secondPlayer)
+            Player second = playerDaoImpl.findByName(secondPlayer)
                     .orElseGet(() -> {
                         Player newPlayer = new Player();
                         newPlayer.setName(secondPlayer);
-                        return playerDao.save(newPlayer);
+                        return playerDaoImpl.save(newPlayer);
                     });
 //            req.setAttribute(ATTR_SECOND_PLAYER, second);
 //            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);

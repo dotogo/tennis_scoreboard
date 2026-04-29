@@ -3,6 +3,8 @@ package org.proj4.tennis_scoreboard.service;
 import org.proj4.tennis_scoreboard.Exception.NotFoundException;
 import org.proj4.tennis_scoreboard.dao.MatchDao;
 import org.proj4.tennis_scoreboard.dao.PlayerDao;
+import org.proj4.tennis_scoreboard.dao.impl.MatchDaoImpl;
+import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.dto.MatchDto;
 import org.proj4.tennis_scoreboard.dto.pagination.PaginatedResult;
 import org.proj4.tennis_scoreboard.entity.Match;
@@ -13,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class MatchService {
-    private final MatchDao matchDao = new MatchDao();
-    private final PlayerDao playerDao = new PlayerDao();
+    private final MatchDao matchDao = new MatchDaoImpl();
+    private final PlayerDao playerDao = new PlayerDaoImpl();
 
     public PaginatedResult<MatchDto> getMatchesPaginated(int currentPage, int pageSize) {
         if (currentPage < 1) {

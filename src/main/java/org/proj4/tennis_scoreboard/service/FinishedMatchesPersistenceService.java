@@ -1,6 +1,7 @@
 package org.proj4.tennis_scoreboard.service;
 
 import org.proj4.tennis_scoreboard.dao.MatchDao;
+import org.proj4.tennis_scoreboard.dao.impl.MatchDaoImpl;
 import org.proj4.tennis_scoreboard.entity.Match;
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 import org.proj4.tennis_scoreboard.entity.Player;
@@ -9,7 +10,7 @@ import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import java.util.Objects;
 
 public class FinishedMatchesPersistenceService {
-    private final MatchDao matchDao = new MatchDao();
+    private final MatchDao matchDao = new MatchDaoImpl();
     private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
 
     public void persistMatch(OngoingMatch ongoingMatch) {
