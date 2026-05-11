@@ -1,8 +1,7 @@
 package org.proj4.tennis_scoreboard.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.experimental.UtilityClass;
+import tools.jackson.databind.ObjectMapper;
 
 @UtilityClass
 public final class JsonUtil {
@@ -12,7 +11,7 @@ public final class JsonUtil {
 //        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
 //    }
 
-    public static String toJson(Object obj) throws JsonProcessingException {
+    public static String toJson(Object obj) {
         return objectMapper.writeValueAsString(obj);
     }
 }
