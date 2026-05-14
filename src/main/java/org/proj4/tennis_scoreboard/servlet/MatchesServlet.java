@@ -45,7 +45,7 @@ public class MatchesServlet extends BaseServlet {
         req.getRequestDispatcher("/WEB-INF/views/matches.jsp").forward(req, resp);
     }
 
-    private int getPageNumber(String pageParam)  {
+    int getPageNumber(String pageParam)  {
         if (pageParam == null || pageParam.isBlank()) {
             return 1;
         }
@@ -59,7 +59,7 @@ public class MatchesServlet extends BaseServlet {
         }
     }
 
-    private List<Integer> getPageRange(int currentPage, int totalPages, int range) {
+    List<Integer> getPageRange(int currentPage, int totalPages, int range) {
         List<Integer> pageRange = new ArrayList<>();
         int min = Math.max(1, currentPage - range);
         int max = Math.min(totalPages, currentPage + range);

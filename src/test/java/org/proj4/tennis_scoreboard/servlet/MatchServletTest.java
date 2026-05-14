@@ -25,11 +25,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class MatchServletTest {
+class MatchServletTest {
 
     @Mock
     private HttpServletRequest req;
