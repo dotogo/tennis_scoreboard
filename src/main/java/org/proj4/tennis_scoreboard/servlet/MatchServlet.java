@@ -30,8 +30,17 @@ public class MatchServlet extends BaseServlet {
     public static final String ATTR_FIRST_PLAYER = "firstPlayer";
     public static final String ATTR_SECOND_PLAYER = "secondPlayer";
 
-    private final PlayerDao playerDao = new PlayerDaoImpl();
-    private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
+    private final PlayerDao playerDao;
+    private final OngoingMatchesService ongoingMatchesService;
+
+    public MatchServlet() {
+        this(new PlayerDaoImpl(), new OngoingMatchesService());
+    }
+
+    public MatchServlet(PlayerDao playerDao, OngoingMatchesService ongoingMatchesService) {
+        this.playerDao = playerDao;
+        this.ongoingMatchesService = ongoingMatchesService;
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
