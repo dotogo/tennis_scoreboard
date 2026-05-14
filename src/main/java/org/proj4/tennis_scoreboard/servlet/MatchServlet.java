@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.proj4.tennis_scoreboard.dao.PlayerDao;
 import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.entity.*;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
@@ -29,11 +30,11 @@ public class MatchServlet extends BaseServlet {
     public static final String ATTR_FIRST_PLAYER = "firstPlayer";
     public static final String ATTR_SECOND_PLAYER = "secondPlayer";
 
-    private final PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+    private final PlayerDao playerDao = new PlayerDaoImpl();
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, String[]> parameterMap = req.getParameterMap();
 
         if (!parameterMap.containsKey(PARAM_FIRST_PLAYER) || !parameterMap.containsKey(PARAM_SECOND_PLAYER)) {
@@ -61,19 +62,19 @@ public class MatchServlet extends BaseServlet {
         }
 
         try {
-            Player first = playerDaoImpl.findByName(firstPlayer)
+            Player first = playerDao.findByName(firstPlayer)
                     .orElseGet(() -> {
                         Player newPlayer = new Player();
                         newPlayer.setName(firstPlayer);
-                        return playerDaoImpl.save(newPlayer);
+                        return playerDao.save(newPlayer);
                     });
 //            req.setAttribute(ATTR_FIRST_PLAYER, first);
 
-            Player second = playerDaoImpl.findByName(secondPlayer)
+            Player second = playerDao.findByName(secondPlayer)
                     .orElseGet(() -> {
                         Player newPlayer = new Player();
                         newPlayer.setName(secondPlayer);
-                        return playerDaoImpl.save(newPlayer);
+                        return playerDao.save(newPlayer);
                     });
 //            req.setAttribute(ATTR_SECOND_PLAYER, second);
 //            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);
