@@ -59,10 +59,10 @@ public class MatchesServlet extends BaseServlet {
         }
     }
 
-    List<Integer> getPageRange(int currentPage, int totalPages, int range) {
+    List<Integer> getPageRange(int currentPage, int totalPages, int deviatiion) {
         List<Integer> pageRange = new ArrayList<>();
-        int min = Math.max(1, currentPage - range);
-        int max = Math.min(totalPages, currentPage + range);
+        int min = Math.max(1, currentPage - deviatiion);
+        int max = Math.min(totalPages, currentPage + deviatiion);
 
         for (int i = min; i <= max; i++) {
             pageRange.add(i);

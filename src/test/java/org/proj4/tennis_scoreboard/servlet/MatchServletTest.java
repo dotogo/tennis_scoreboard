@@ -86,9 +86,9 @@ class MatchServletTest {
         return Stream.of(
                 Arguments.of("wrongParameters", wrongParameters),
                 Arguments.of("missingParameters", missingParameters),
-                Arguments.of("firstPlayerEmpty", firstPlayerEmpty),
-                Arguments.of("secondPlayerEmpty", secondPlayerEmpty),
-                Arguments.of("samePlayers", samePlayers)
+                Arguments.of("firstPlayerNameEmpty", firstPlayerEmpty),
+                Arguments.of("secondPlayerNameEmpty", secondPlayerEmpty),
+                Arguments.of("samePlayerNames", samePlayers)
         );
     }
 
