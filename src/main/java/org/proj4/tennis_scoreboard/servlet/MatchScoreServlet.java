@@ -1,5 +1,7 @@
 package org.proj4.tennis_scoreboard.servlet;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +24,41 @@ public class MatchScoreServlet extends BaseServlet {
     private static final String INVALID_UUID = "Invalid UUID";
     private static final String ERROR_GETTING_MATCH = "Something went wrong while getting ongoing match";
 
-    private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-    private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
-    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
+    private OngoingMatchesService ongoingMatchesService;
+    private MatchScoreCalculationService matchScoreCalculationService;
+    private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
+
+    public MatchScoreServlet() {
+
+    }
+
+    public MatchScoreServlet(OngoingMatchesService ongoingMatchesService,
+                             MatchScoreCalculationService matchScoreCalculationService,
+                             FinishedMatchesPersistenceService finishedMatchesPersistenceService ) {
+
+        this.ongoingMatchesService = ongoingMatchesService;
+        this.matchScoreCalculationService = matchScoreCalculationService;
+        this.finishedMatchesPersistenceService = finishedMatchesPersistenceService;
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+
+        ServletContext servletContext = getServletContext();
+
+        if (ongoingMatchesService == null) {
+            this.ongoingMatchesService = (OngoingMatchesService) servletContext.getAttribute("ongoingMatchesService");
+        }
+
+        if (matchScoreCalculationService == null) {
+            this.matchScoreCalculationService = (MatchScoreCalculationService) servletContext.getAttribute("matchScoreCalculationService");
+        }
+
+        if (finishedMatchesPersistenceService == null) {
+            this.finishedMatchesPersistenceService = (FinishedMatchesPersistenceService) servletContext.getAttribute("finishedMatchesPersistenceService");
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

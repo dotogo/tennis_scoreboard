@@ -1,5 +1,7 @@
 package org.proj4.tennis_scoreboard.servlet;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +21,14 @@ public class MatchesServlet extends BaseServlet {
     private static final int PAGE_SIZE = 5;
     private static final int RANGE_PLUS_MINUS_PAGES_FOR_PAGINATION = 2;
 
-    private final MatchService matchService = new MatchService();
+    private MatchService matchService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+
+        this.matchService = (MatchService) getServletContext().getAttribute("matchService");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

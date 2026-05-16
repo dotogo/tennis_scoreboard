@@ -1,5 +1,7 @@
 package org.proj4.tennis_scoreboard.servlet;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,16 +32,30 @@ public class MatchServlet extends BaseServlet {
     public static final String ATTR_FIRST_PLAYER = "firstPlayer";
     public static final String ATTR_SECOND_PLAYER = "secondPlayer";
 
-    private final PlayerDao playerDao;
-    private final OngoingMatchesService ongoingMatchesService;
+    private PlayerDao playerDao;
+    private OngoingMatchesService ongoingMatchesService;
 
     public MatchServlet() {
-        this(new PlayerDaoImpl(), new OngoingMatchesService());
+
     }
 
     public MatchServlet(PlayerDao playerDao, OngoingMatchesService ongoingMatchesService) {
         this.playerDao = playerDao;
         this.ongoingMatchesService = ongoingMatchesService;
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ServletContext servletContext = getServletContext();
+
+        if (playerDao == null) {
+            this.playerDao = (PlayerDao) servletContext.getAttribute("playerDao");
+        }
+
+        if (ongoingMatchesService == null) {
+            this.ongoingMatchesService = (OngoingMatchesService) servletContext.getAttribute("ongoingMatchesService");
+        }
     }
 
     @Override
