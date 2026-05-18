@@ -1,6 +1,8 @@
 package org.proj4.tennis_scoreboard.service;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 import org.proj4.tennis_scoreboard.entity.Player;
@@ -14,89 +16,106 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MatchScoreCalculationServiceTest {
 
     private MatchScoreCalculationService matchScoreCalculationService;
+    private PlayerScore firstPlayerScore;
+    private PlayerScore secondPlayerScore;
 
     @BeforeEach
-    void prepare() {
+    void prepareParent() {
         matchScoreCalculationService = new MatchScoreCalculationService();
+        firstPlayerScore = new PlayerScore();
+        secondPlayerScore = new PlayerScore();
     }
 
-    @Test
-    void FinishedMatchIfFirstPlayerHasSetsEquals2() {
-        PlayerScore firstPlayerScore = new PlayerScore();
-        firstPlayerScore.setSets(2);
+    @Nested
+    @DisplayName("Is the match finished?")
+    class FinishedMatchTest {
 
-        PlayerScore secondPlayerScore = new PlayerScore();
+        @Test
+        @DisplayName("Match finished. First player won 2 sets.")
+        void FinishedMatchIfFirstPlayerHasSetsEquals2() {
+            firstPlayerScore.setSets(2);
 
-        boolean result = matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore);
+            boolean result = matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore);
 
-        assertTrue(result);
+            assertTrue(result);
+        }
+
+        @Test
+        @DisplayName("Match finished. Second player won 2 sets.")
+        void FinishedMatchIfSecondPlayerHasSetsEquals2() {
+            secondPlayerScore.setSets(2);
+
+            boolean result = matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore);
+
+            assertTrue(result);
+        }
+
+        @Test
+        @DisplayName("Unfinished match. Neither player won 2 sets.")
+        void UnfinishedMatchIfNeitherPlayerHas2Sets() {
+            secondPlayerScore.setSets(1);
+
+            boolean result = matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore);
+
+            assertFalse(result);
+        }
     }
 
-    @Test
-    void FinishedMatchIfSecondPlayerHasSetsEquals2() {
-        PlayerScore firstPlayerScore = new PlayerScore();
+    @Nested
+    @DisplayName("Get a winner?")
+    class GetWinnerTest {
+        private Player firstPlayer;
+        private Player secondPlayer;
 
-        PlayerScore secondPlayerScore = new PlayerScore();
-        secondPlayerScore.setSets(2);
+        @BeforeEach
+        void prepareNested() {
+            firstPlayer = new Player();
+            secondPlayer = new Player();
+        }
 
-        boolean result = matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore);
+        @Test
+        @DisplayName("First Player is Winner")
+        void FirstPlayerIsWinner() {
+            firstPlayerScore.setSets(2);
 
-        assertTrue(result);
+            OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
+
+            Optional<Player> winner = matchScoreCalculationService.getWinner(ongoingMatch);
+
+            assertThat(winner).hasValue(firstPlayer);
+        }
+
+        @Test
+        @DisplayName("Second Player is Winner")
+        void SecondPlayerIsWinner() {
+            secondPlayerScore.setSets(2);
+
+            OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
+
+            Optional<Player> winner = matchScoreCalculationService.getWinner(ongoingMatch);
+
+            assertThat(winner).hasValue(secondPlayer);
+        }
+
+        @Test
+        @DisplayName("No Winner found")
+        void NoWinnerFound() {
+            OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
+
+            Optional<Player> winner = matchScoreCalculationService.getWinner(ongoingMatch);
+
+            assertFalse(winner.isPresent());
+        }
     }
 
-    @Test
-    void UnfinishedMatchIfNeitherPlayerHas2Sets() {
-        PlayerScore firstPlayerScore = new PlayerScore();
+    @Nested
+    @DisplayName("Testing the match score update")
+    class UpdateMatchScoreTest {
 
-        PlayerScore secondPlayerScore = new PlayerScore();
-        secondPlayerScore.setSets(1);
+        @Test
+        void OnePointWillBeAddedToPointWinner() {
 
-        boolean result = matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore);
+        }
 
-        assertFalse(result);
-    }
-
-    @Test
-    void FirstPlayerIsWinner() {
-        Player firstPlayer = new Player();
-        Player secondPlayer = new Player();
-        PlayerScore firstPlayerScore = new PlayerScore();
-        firstPlayerScore.setSets(2);
-        PlayerScore secondPlayerScore = new PlayerScore();
-
-        OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
-
-        Optional<Player> winner = matchScoreCalculationService.getWinner(ongoingMatch);
-
-        assertThat(winner).hasValue(firstPlayer);
-    }
-
-    @Test
-    void SecondPlayerIsWinner() {
-        Player firstPlayer = new Player();
-        Player secondPlayer = new Player();
-        PlayerScore firstPlayerScore = new PlayerScore();
-        PlayerScore secondPlayerScore = new PlayerScore();
-        secondPlayerScore.setSets(2);
-
-        OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
-
-        Optional<Player> winner = matchScoreCalculationService.getWinner(ongoingMatch);
-
-        assertThat(winner).hasValue(secondPlayer);
-    }
-
-    @Test
-    void NoWinnerFound() {
-        Player firstPlayer = new Player();
-        Player secondPlayer = new Player();
-        PlayerScore firstPlayerScore = new PlayerScore();
-        PlayerScore secondPlayerScore = new PlayerScore();
-
-        OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
-
-        Optional<Player> winner = matchScoreCalculationService.getWinner(ongoingMatch);
-
-        assertFalse(winner.isPresent());
     }
 }
