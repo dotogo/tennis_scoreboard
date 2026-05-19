@@ -156,7 +156,7 @@ class MatchScoreCalculationServiceTest {
 
         @Test
         @DisplayName("Point winner gets AD if deuce")
-        void PointWinnerGetAdvantageIfDeuce() {
+        void pointWinnerGetAdvantageIfDeuce() {
             String pointWinner = "player1";
 
             firstPlayerScore.setPoints(Point.FORTY);
@@ -187,13 +187,93 @@ class MatchScoreCalculationServiceTest {
             );
         }
 
+        @Test
+        @DisplayName("Tie-break starts if game score 6:6")
+        void tieBreakStartsIfScoreInGamesIs6To6() {
+            String pointWinner = "player1";
+
+            firstPlayerScore.setGames(6);
+            secondPlayerScore.setGames(6);
+
+            matchScoreCalculationService.updateMatchScore(ongoingMatch, pointWinner);
+
+            assertThat(firstPlayerScore.getTieBreak()).isEqualTo(1);
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("getArgumentsForParametersTieBreakIsWonTest")
+        @DisplayName("Tie break is won")
+        void tieBreakIsWon(String description, int firstPlayerTieBreak, int secondPlayerTieBreak) {
+            String pointWinner = "player1";
+
+            firstPlayerScore.setGames(6);
+            secondPlayerScore.setGames(6);
+
+            firstPlayerScore.setTieBreak(firstPlayerTieBreak);
+            secondPlayerScore.setTieBreak(secondPlayerTieBreak);
+
+            matchScoreCalculationService.updateMatchScore(ongoingMatch, pointWinner);
+
+            assertAll(
+                    () -> assertThat(firstPlayerScore.getSets()).isEqualTo(1),
+                    () -> assertThat(firstPlayerScore.getTieBreak()).isEqualTo(0),
+                    () -> assertThat(firstPlayerScore.getGames()).isEqualTo(0),
+                    () -> assertThat(firstPlayerScore.getPoints()).isEqualTo(Point.LOVE),
+                    () -> assertThat(secondPlayerScore.getTieBreak()).isEqualTo(0),
+                    () -> assertThat(secondPlayerScore.getGames()).isEqualTo(0),
+                    () -> assertThat(secondPlayerScore.getPoints()).isEqualTo(Point.LOVE)
+            );
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("getArgumentsForParametersSetIsWonTest")
+        @DisplayName("Set is won")
+        void setIsWon(String description, int firstPlayerGames, int secondPlayerTieGames) {
+            String pointWinner = "player1";
+
+            firstPlayerScore.setGames(firstPlayerGames);
+            secondPlayerScore.setGames(secondPlayerTieGames);
+
+            matchScoreCalculationService.updateMatchScore(ongoingMatch, pointWinner);
+
+            assertAll(
+                    () -> assertThat(firstPlayerScore.getSets()).isEqualTo(1),
+                    () -> assertThat(firstPlayerScore.getTieBreak()).isEqualTo(0),
+                    () -> assertThat(firstPlayerScore.getGames()).isEqualTo(0),
+                    () -> assertThat(firstPlayerScore.getPoints()).isEqualTo(Point.LOVE),
+                    () -> assertThat(secondPlayerScore.getTieBreak()).isEqualTo(0),
+                    () -> assertThat(secondPlayerScore.getGames()).isEqualTo(0),
+                    () -> assertThat(secondPlayerScore.getPoints()).isEqualTo(Point.LOVE)
+            );
+        }
+
         static Stream<Arguments> getArgumentsForParametersPointWinnerWonGameTest() {
             return Stream.of(
-                    Arguments.of("Point winner - opponent: AD - FORTY", Point.AD, Point.FORTY),
-                    Arguments.of("Point winner - opponent: FORTY - THIRTY", Point.FORTY, Point.THIRTY),
-                    Arguments.of("Point winner - opponent: FORTY - FIFTEEN", Point.FORTY, Point.FIFTEEN),
-                    Arguments.of("Point winner - opponent: FORTY - LOVE", Point.FORTY, Point.LOVE)
+                    Arguments.of("Points, winner - opponent: AD - FORTY", Point.AD, Point.FORTY),
+                    Arguments.of("Points, winner - opponent: FORTY - THIRTY", Point.FORTY, Point.THIRTY),
+                    Arguments.of("Points, winner - opponent: FORTY - FIFTEEN", Point.FORTY, Point.FIFTEEN),
+                    Arguments.of("Points, winner - opponent: FORTY - LOVE", Point.FORTY, Point.LOVE)
             );
+        }
+
+        static Stream<Arguments> getArgumentsForParametersTieBreakIsWonTest() {
+            return Stream.of(
+                    Arguments.of("Tie break, winner - opponent: 6 - 0", 6, 0),
+                    Arguments.of("Tie break, winner - opponent: 6 - 5", 6, 5),
+                    Arguments.of("Tie break, winner - opponent: 7 - 6", 7, 6),
+                    Arguments.of("Tie break, winner - opponent: 12 - 11", 12, 11)
+            );
+        }
+
+        static Stream<Arguments> getArgumentsForParametersSetIsWonTest() {
+            return Stream.of(
+                    Arguments.of("Games, winner - opponent: 6 - 4", 6, 4),
+                    Arguments.of("Games, winner - opponent: 6 - 3", 6, 3),
+                    Arguments.of("Games, winner - opponent: 6 - 2", 6, 2),
+                    Arguments.of("Games, winner - opponent: 6 - 1", 6, 1),
+                    Arguments.of("Games, winner - opponent: 6 - 0", 6, 0),
+                    Arguments.of("Games, winner - opponent: 7 - 5", 7, 5)
+                    );
         }
 
     }
