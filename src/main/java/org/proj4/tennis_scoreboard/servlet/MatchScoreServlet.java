@@ -6,7 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.proj4.tennis_scoreboard.Validator;
+import org.proj4.tennis_scoreboard.util.Validator;
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import org.proj4.tennis_scoreboard.service.FinishedMatchesPersistenceService;
@@ -65,7 +65,7 @@ public class MatchScoreServlet extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String uuidFromParameter = req.getParameter(PARAM_UUID);
 
-        if (Validator.isUuidNotValid(uuidFromParameter)) {
+        if (!Validator.isValidUuid(uuidFromParameter)) {
             sendErrorResponse(resp, INVALID_UUID);
             return;
         }
@@ -88,7 +88,7 @@ public class MatchScoreServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uuidFromParameter = req.getParameter(PARAM_UUID);
 
-        if (Validator.isUuidNotValid(uuidFromParameter)) {
+        if (!Validator.isValidUuid(uuidFromParameter)) {
             sendErrorResponse(resp, INVALID_UUID);
             return;
         }
