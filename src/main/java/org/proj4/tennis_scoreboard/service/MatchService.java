@@ -15,13 +15,28 @@ import java.util.List;
 import java.util.Optional;
 
 public class MatchService {
-    private final MatchDao matchDao = new MatchDaoImpl();
-    private final PlayerDao playerDao = new PlayerDaoImpl();
+    private static final int DEFAULT_PAGE_SIZE = 5;
+    private final MatchDao matchDao;
+    private final PlayerDao playerDao;
+
+    public MatchService() {
+        this(new MatchDaoImpl(), new PlayerDaoImpl());
+    }
+
+    public MatchService(MatchDao matchDao, PlayerDao playerDao) {
+        this.matchDao = matchDao;
+        this.playerDao = playerDao;
+    }
 
     public PaginatedResult<MatchDto> getMatchesPaginated(int currentPage, int pageSize) {
         if (currentPage < 1) {
             currentPage = 1;
         }
+
+        if (pageSize <= 0) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+
         List<Match> allMatches = matchDao.getAllMatches(currentPage, pageSize);
         List<MatchDto> items = MatchMapper.INSTANCE.toDtoList(allMatches);
 
@@ -34,6 +49,10 @@ public class MatchService {
     public PaginatedResult<MatchDto> getMatchesByPlayer(String playerName, int currentPage, int pageSize) {
         if (currentPage < 1) {
             currentPage = 1;
+        }
+
+        if (pageSize <= 0) {
+            pageSize = DEFAULT_PAGE_SIZE;
         }
 
         int totalItems = 0;
