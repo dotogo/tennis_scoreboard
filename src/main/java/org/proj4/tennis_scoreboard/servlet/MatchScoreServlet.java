@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.proj4.tennis_scoreboard.Validator;
 import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import org.proj4.tennis_scoreboard.service.FinishedMatchesPersistenceService;
@@ -63,7 +64,12 @@ public class MatchScoreServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String uuidFromParameter = req.getParameter(PARAM_UUID);
-        checkUuid(resp, uuidFromParameter);
+
+        if (Validator.isUuidNotValid(uuidFromParameter)) {
+            sendErrorResponse(resp, INVALID_UUID);
+            return;
+        }
+
         UUID uuid = UUID.fromString(uuidFromParameter);
 
         Optional<OngoingMatch> matchOptional = ongoingMatchesService.getMatch(uuid);
@@ -81,7 +87,12 @@ public class MatchScoreServlet extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uuidFromParameter = req.getParameter(PARAM_UUID);
-        checkUuid(resp, uuidFromParameter);
+
+        if (Validator.isUuidNotValid(uuidFromParameter)) {
+            sendErrorResponse(resp, INVALID_UUID);
+            return;
+        }
+
         UUID uuid = UUID.fromString(uuidFromParameter);
 
         Optional<OngoingMatch> matchOptional = ongoingMatchesService.getMatch(uuid);
@@ -115,13 +126,5 @@ public class MatchScoreServlet extends BaseServlet {
 
         req.setAttribute(ATTR_MATCH, match);
         req.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(req, resp);
-    }
-
-    private void checkUuid(HttpServletResponse resp, String uuidFromParameter) throws IOException {
-        try {
-            UUID.fromString(uuidFromParameter);
-        } catch (IllegalArgumentException e) {
-            sendErrorResponse(resp, INVALID_UUID);
-        }
     }
 }
