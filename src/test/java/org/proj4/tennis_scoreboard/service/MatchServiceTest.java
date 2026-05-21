@@ -1,5 +1,6 @@
 package org.proj4.tennis_scoreboard.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ class MatchServiceTest {
     private MatchService matchService;
 
     @Test
+    @DisplayName("Return paginated result if current page and page size are valid")
     void checkPaginatedMatchesIfParametersAreValid() {
         int currentPage = 7;
         int pageSize = 3;
@@ -48,6 +50,7 @@ class MatchServiceTest {
     }
 
     @Test
+    @DisplayName("Return paginated result if parameters are not valid")
     void checkPaginatedMatchesIfParametersAreNotValidAndUseDefaultPage1AndPageSize5() {
         int currentPage = 0;
         int pageSize = 0;
@@ -67,5 +70,4 @@ class MatchServiceTest {
                 () -> assertThat(result.getTotalItems()).isEqualTo(totalItems)
         );
     }
-
 }

@@ -46,7 +46,7 @@ public class MatchService {
         return new PaginatedResult<>(items, currentPage, totalPages, totalItems);
     }
 
-    public PaginatedResult<MatchDto> getMatchesByPlayer(String playerName, int currentPage, int pageSize) {
+    public Optional<PaginatedResult<MatchDto>> getMatchesByPlayer(String playerName, int currentPage, int pageSize) {
         if (currentPage < 1) {
             currentPage = 1;
         }
@@ -69,10 +69,8 @@ public class MatchService {
             List<MatchDto> items = MatchMapper.INSTANCE.toDtoList(matches);
             int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
-            return new PaginatedResult<>(items, currentPage, totalPages, totalItems);
-
-        } else {
-            throw new NotFoundException("Player not found");
+            return Optional.of(new PaginatedResult<>(items, currentPage, totalPages, totalItems));
         }
+        return Optional.empty();
     }
 }

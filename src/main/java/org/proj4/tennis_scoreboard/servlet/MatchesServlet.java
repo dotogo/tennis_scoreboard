@@ -13,11 +13,13 @@ import org.proj4.tennis_scoreboard.service.MatchService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet("/matches")
 public class MatchesServlet extends BaseServlet {
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_NAME_FILTER = "filter_by_player_name";
+    private static final String PLAYER_NOT_FOUND = "Player not found";
     private static final int PAGE_SIZE = 5;
     private static final int RANGE_PLUS_MINUS_PAGES_FOR_PAGINATION = 2;
 
@@ -42,8 +44,15 @@ public class MatchesServlet extends BaseServlet {
         if (nameParam == null || nameParam.isEmpty()) {
             matches = matchService.getMatchesPaginated(currentPage, PAGE_SIZE);
         } else {
-            matches = matchService.getMatchesByPlayer(nameParam, currentPage, PAGE_SIZE);
-            req.setAttribute(PARAM_NAME_FILTER, nameParam);
+            Optional<PaginatedResult<MatchDto>> matchesByPlayer = matchService.getMatchesByPlayer(nameParam, currentPage, PAGE_SIZE);
+
+            if (matchesByPlayer.isPresent()) {
+                matches = matchesByPlayer.get();
+                req.setAttribute(PARAM_NAME_FILTER, nameParam);
+            } else {
+                matches = matchService.getMatchesPaginated(currentPage, PAGE_SIZE);
+                req.setAttribute(PARAM_NAME_FILTER, PLAYER_NOT_FOUND);
+            }
         }
 
         int totalPages = matches.getTotalPages();
