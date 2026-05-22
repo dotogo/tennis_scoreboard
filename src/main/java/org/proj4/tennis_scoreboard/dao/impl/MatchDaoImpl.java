@@ -62,7 +62,7 @@ public class MatchDaoImpl implements MatchDao {
                     join fetch m.firstPlayer p1
                     join fetch m.secondPlayer p2
                     join fetch m.winner winner
-                    order by m.id
+                    order by m.id DESC
                     
                     """;
             Query<Match> query = session.createQuery(hql, Match.class);
@@ -97,7 +97,7 @@ public class MatchDaoImpl implements MatchDao {
                         join fetch m.winner winner
                         where m.firstPlayer IN :players
                         or m.secondPlayer IN :players
-                        order by m.id
+                        order by m.id DESC
                         """;
             Query<Match> query = session.createQuery(hql, Match.class);
             query.setParameter("players", players);
