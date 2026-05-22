@@ -11,8 +11,10 @@ import org.proj4.tennis_scoreboard.dao.PlayerDao;
 import org.proj4.tennis_scoreboard.dto.MatchDto;
 import org.proj4.tennis_scoreboard.dto.pagination.PaginatedResult;
 import org.proj4.tennis_scoreboard.entity.Match;
+import org.proj4.tennis_scoreboard.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -68,6 +70,37 @@ class MatchServiceTest {
                 () -> assertThat(result.getTotalPages()).isEqualTo(totalPages),
                 () -> assertThat(result.getCurrentPage()).isEqualTo(1),
                 () -> assertThat(result.getTotalItems()).isEqualTo(totalItems)
+        );
+    }
+
+    @Test
+    @DisplayName("Return empty Optional if player by name is not found")
+    void checkPaginatedMatchesIfPlayerByNameIsNotFound() {
+        List<Player> playersStub = List.of();
+
+        doReturn(playersStub).when(playerDao).findByNameLike(anyString());
+
+        Optional<PaginatedResult<MatchDto>> matchesByPlayer = matchService.getMatchesByPlayer("namePart", 10, 3);
+
+        assertThat(matchesByPlayer).isEqualTo(Optional.empty());
+    }
+
+    @Test
+    @DisplayName("Return full Optional if player by name is found")
+    void checkPaginatedMatchesIfPlayerByNameIsFound() {
+        List<Player> playersStub = List.of(new Player(), new Player(), new Player(), new Player(), new Player());
+
+        doReturn(playersStub).when(playerDao).findByNameLike(anyString());
+        doReturn(5).when(matchDao).countAllByPlayers(any());
+
+        Optional<PaginatedResult<MatchDto>> matchesByPlayer = matchService.getMatchesByPlayer("namePart", 1, 3);
+
+        assertThat(matchesByPlayer).hasValueSatisfying(
+                match -> {
+                    assertThat(match.getTotalItems()).isEqualTo(5);
+                    assertThat(match.getCurrentPage()).isEqualTo(1);
+                    assertThat(match.getTotalPages()).isEqualTo(2);
+                }
         );
     }
 }
