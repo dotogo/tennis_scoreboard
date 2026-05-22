@@ -84,7 +84,7 @@ public class MatchDaoImpl implements MatchDao {
         return matches;
     }
 
-    public List<Match> findByPlayer(Player player, int page, int pageSize) {
+    public List<Match> findByPlayers(List<Player> players, int page, int pageSize) {
         List<Match> matches;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -95,21 +95,20 @@ public class MatchDaoImpl implements MatchDao {
                         join fetch m.firstPlayer p1
                         join fetch m.secondPlayer p2
                         join fetch m.winner winner
-                        where m.firstPlayer.id = :playerId
-                        or m.secondPlayer.id = :playerId
+                        where m.firstPlayer IN :players
+                        or m.secondPlayer IN :players
                         order by m.id
                         """;
             Query<Match> query = session.createQuery(hql, Match.class);
-            query.setParameter("playerId", player.getId());
+            query.setParameter("players", players);
             query.setFirstResult(offset);
             query.setMaxResults(pageSize);
             matches = query.getResultList();
 
         } catch (Exception e) {
-                // TODO make custom exception
-                String playerName = (player != null) ? player.getName() : "unknown";
-                throw new RuntimeException("Error while finding matches by player: " + playerName, e);
-            }
+            // TODO make custom exception
+            throw new RuntimeException("Error while finding matches by players.", e);
+        }
         return matches;
     }
 
@@ -130,24 +129,23 @@ public class MatchDaoImpl implements MatchDao {
         return count.intValue();
     }
 
-    public int countAllByPlayer(Player player) {
+    public int countAllByPlayers(List<Player> players) {
         Long count;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             String hql = """
                         select count(m) from Match m
-                        where firstPlayer = :player
-                        or secondPlayer = :player
+                        where firstPlayer IN :players
+                        or secondPlayer IN :players
                         """;
             Query<Long> query = session.createQuery(hql, Long.class);
-            query.setParameter("player", player);
+            query.setParameter("players", players);
             count = query.getSingleResult();
 
         } catch (Exception e) {
             // TODO make custom exception
-            String playerName = (player != null) ? player.getName() : "unknown";
-            throw new RuntimeException("Error while counting all matches by player: " + playerName, e);
+            throw new RuntimeException("Error while counting all matches by players", e);
         }
 
         return count.intValue();

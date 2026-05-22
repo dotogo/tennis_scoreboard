@@ -9,11 +9,10 @@ public interface MatchDao extends Dao<Match> {
 
     List<Match> getAllMatches(int page, int pageSize);
 
-    List<Match> findByPlayer(Player player, int page, int pageSize);
+    List<Match> findByPlayers(List<Player> players, int page, int pageSize);
 
     int countAll();
 
-    int countAllByPlayer(Player player);
-
+    int countAllByPlayers(List<Player> players);
 
 }

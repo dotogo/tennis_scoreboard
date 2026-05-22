@@ -25,6 +25,19 @@ public class PlayerDaoImpl implements PlayerDao {
         }
     }
 
+    public List<Player> findByNameLike(String nameLike) {
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            Query<Player> query = session.createQuery("from Player where lower(name) LIKE lower(:nameLike)", Player.class);
+            query.setParameter("nameLike", "%" + nameLike.trim().toLowerCase() + "%");
+
+            session.getTransaction().commit();
+            return query.list();
+        }
+    }
+
     public Player save(Player player) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -56,6 +69,5 @@ public class PlayerDaoImpl implements PlayerDao {
         }
         return players;
     }
-
 
 }

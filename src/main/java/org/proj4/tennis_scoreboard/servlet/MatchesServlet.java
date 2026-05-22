@@ -1,7 +1,6 @@
 package org.proj4.tennis_scoreboard.servlet;
 
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,7 +47,7 @@ public class MatchesServlet extends BaseServlet {
 
             if (matchesByPlayer.isPresent()) {
                 matches = matchesByPlayer.get();
-                req.setAttribute(PARAM_NAME_FILTER, nameParam);
+                req.setAttribute(PARAM_NAME_FILTER, nameParam.trim());
             } else {
                 matches = matchService.getMatchesPaginated(currentPage, PAGE_SIZE);
                 req.setAttribute(PARAM_NAME_FILTER, PLAYER_NOT_FOUND);

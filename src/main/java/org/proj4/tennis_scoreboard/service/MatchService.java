@@ -1,6 +1,5 @@
 package org.proj4.tennis_scoreboard.service;
 
-import org.proj4.tennis_scoreboard.Exception.NotFoundException;
 import org.proj4.tennis_scoreboard.dao.MatchDao;
 import org.proj4.tennis_scoreboard.dao.PlayerDao;
 import org.proj4.tennis_scoreboard.dao.impl.MatchDaoImpl;
@@ -58,19 +57,18 @@ public class MatchService {
         int totalItems = 0;
         List<Match> matches;
 
-        Optional<Player> optionalPlayer = playerDao.findByName(playerName);
+        List<Player> players = playerDao.findByNameLike(playerName);
 
-        if (optionalPlayer.isPresent()) {
-            Player player = optionalPlayer.get();
-
-            matches = matchDao.findByPlayer(player, currentPage, pageSize);
-            totalItems = matchDao.countAllByPlayer(player);
-
-            List<MatchDto> items = MatchMapper.INSTANCE.toDtoList(matches);
-            int totalPages = (int) Math.ceil((double) totalItems / pageSize);
-
-            return Optional.of(new PaginatedResult<>(items, currentPage, totalPages, totalItems));
+        if (players.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        matches = matchDao.findByPlayers(players, currentPage, pageSize);
+        totalItems = matchDao.countAllByPlayers(players);
+
+        List<MatchDto> items = MatchMapper.INSTANCE.toDtoList(matches);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        return Optional.of(new PaginatedResult<>(items, currentPage, totalPages, totalItems));
     }
 }
