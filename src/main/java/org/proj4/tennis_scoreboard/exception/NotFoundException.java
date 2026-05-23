@@ -1,4 +1,4 @@
-package org.proj4.tennis_scoreboard.Exception;
+package org.proj4.tennis_scoreboard.exception;
 
 public class NotFoundException extends RuntimeException {
 
