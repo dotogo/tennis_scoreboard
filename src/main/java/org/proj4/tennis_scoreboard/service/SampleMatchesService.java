@@ -6,9 +6,8 @@ import org.proj4.tennis_scoreboard.dao.impl.MatchDaoImpl;
 import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.entity.Match;
 import org.proj4.tennis_scoreboard.entity.Player;
+import org.proj4.tennis_scoreboard.util.ResourceReader;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,29 +19,10 @@ public class SampleMatchesService {
     private final PlayerDao playerDao = new PlayerDaoImpl();
 
     public void saveSampleMatches(int numberOfMatches) {
-        List<String> playerNames = readPlayerNames(SAMPLE_PLAYER_NAMES);
+        List<String> playerNames = ResourceReader.readLines(SAMPLE_PLAYER_NAMES);
         List<Player> players = saveSamplePlayers(playerNames);
         List<Match> matches = generateSampleMatches(players, numberOfMatches);
         matchDao.saveAll(matches);
-    }
-
-    private List<String> readPlayerNames(String fileName) {
-         try (InputStream is = SampleMatchesService.class.getClassLoader().getResourceAsStream(fileName)) {
-             if (is == null) {
-                 throw new FileNotFoundException("File not found: " + fileName);
-             }
-
-             try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                 List<String> playerNames = new ArrayList<>();
-                 String line;
-                 while ((line = br.readLine()) != null) {
-                     playerNames.add(line);
-                 }
-                 return playerNames;
-             }
-         } catch (IOException e) {
-             throw new RuntimeException("Can not read sample player names.", e);
-         }
     }
 
     private List<Player> saveSamplePlayers(List<String> playerNames) {
