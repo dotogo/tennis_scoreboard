@@ -20,6 +20,7 @@ public class AppContextListener implements ServletContextListener {
         MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
         FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
         SampleMatchesService sampleMatchesService = new SampleMatchesService();
+        PlayerService playerService = new PlayerService();
         PlayerDao playerDao = new PlayerDaoImpl();
         MatchDao matchDao = new MatchDaoImpl();
 
@@ -29,6 +30,7 @@ public class AppContextListener implements ServletContextListener {
         context.setAttribute("matchScoreCalculationService", matchScoreCalculationService);
         context.setAttribute("finishedMatchesPersistenceService", finishedMatchesPersistenceService);
         context.setAttribute("sampleMatchesService", sampleMatchesService);
+        context.setAttribute("playerService", playerService);
         context.setAttribute("playerDao", playerDao);
         context.setAttribute("matchDao", matchDao);
     }

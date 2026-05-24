@@ -6,10 +6,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.proj4.tennis_scoreboard.dao.PlayerDao;
-import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.entity.*;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
+import org.proj4.tennis_scoreboard.service.PlayerService;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -29,18 +28,15 @@ public class MatchServlet extends BaseServlet {
     private static final String SECOND_PLAYER_EMPTY = "Second player name cannot be empty.";
     private static final String SAME_PLAYER_NAMES = "Player names cannot be the same.";
 
-    public static final String ATTR_FIRST_PLAYER = "firstPlayer";
-    public static final String ATTR_SECOND_PLAYER = "secondPlayer";
-
-    private PlayerDao playerDao;
+    private PlayerService playerService;
     private OngoingMatchesService ongoingMatchesService;
 
     public MatchServlet() {
 
     }
 
-    public MatchServlet(PlayerDao playerDao, OngoingMatchesService ongoingMatchesService) {
-        this.playerDao = playerDao;
+    public MatchServlet(PlayerService playerService, OngoingMatchesService ongoingMatchesService) {
+        this.playerService = playerService;
         this.ongoingMatchesService = ongoingMatchesService;
     }
 
@@ -49,8 +45,8 @@ public class MatchServlet extends BaseServlet {
         super.init(config);
         ServletContext servletContext = getServletContext();
 
-        if (playerDao == null) {
-            this.playerDao = (PlayerDao) servletContext.getAttribute("playerDao");
+        if (playerService == null) {
+            this.playerService = (PlayerService) servletContext.getAttribute("playerService");
         }
 
         if (ongoingMatchesService == null) {
@@ -68,53 +64,36 @@ public class MatchServlet extends BaseServlet {
             return;
         }
 
-        String firstPlayer = parameterMap.get(PARAM_FIRST_PLAYER)[0];
-        String secondPlayer = parameterMap.get(PARAM_SECOND_PLAYER)[0];
+        String firstPlayerName = parameterMap.get(PARAM_FIRST_PLAYER)[0];
+        String secondPlayerName = parameterMap.get(PARAM_SECOND_PLAYER)[0];
 
-        if (firstPlayer == null || firstPlayer.trim().isEmpty()) {
+        if (firstPlayerName == null || firstPlayerName.trim().isBlank()) {
             sendErrorResponse(resp, FIRST_PLAYER_EMPTY);
             return;
         }
 
-        if (secondPlayer == null || secondPlayer.trim().isEmpty()) {
+        if (secondPlayerName == null || secondPlayerName.trim().isBlank()) {
             sendErrorResponse(resp, SECOND_PLAYER_EMPTY);
             return;
         }
 
-        if (firstPlayer.trim().equals(secondPlayer.trim())) {
+        if (firstPlayerName.trim().equals(secondPlayerName.trim())) {
             sendErrorResponse(resp, SAME_PLAYER_NAMES);
             return;
         }
 
         try {
-            Player first = playerDao.findByName(firstPlayer)
-                    .orElseGet(() -> {
-                        Player newPlayer = new Player();
-                        newPlayer.setName(firstPlayer);
-                        return playerDao.save(newPlayer);
-                    });
-//            req.setAttribute(ATTR_FIRST_PLAYER, first);
-
-            Player second = playerDao.findByName(secondPlayer)
-                    .orElseGet(() -> {
-                        Player newPlayer = new Player();
-                        newPlayer.setName(secondPlayer);
-                        return playerDao.save(newPlayer);
-                    });
-//            req.setAttribute(ATTR_SECOND_PLAYER, second);
-//            req.getRequestDispatcher("/WEB-INF/views/players.jsp").forward(req, resp);
+            Player first = playerService.findOrCreate(firstPlayerName);
+            Player second = playerService.findOrCreate(secondPlayerName);
 
             OngoingMatch ongoingMatch = new OngoingMatch(first, second, new PlayerScore(), new PlayerScore());
             UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
 
-//            resp.sendRedirect("/match-score?uuid=" + uuid.toString());
             resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
-
 
         } catch (Exception e) {
             sendErrorResponse(resp, e.getMessage());
         }
-
     }
 
     @Override
