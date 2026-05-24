@@ -15,8 +15,17 @@ import java.util.List;
 public class SampleMatchesService {
     private static final String SAMPLE_PLAYER_NAMES = "samplePlayerNames.txt";
 
-    private final MatchDao matchDao = new MatchDaoImpl();
-    private final PlayerDao playerDao = new PlayerDaoImpl();
+    private final MatchDao matchDao;
+    private final PlayerDao playerDao;
+
+    public SampleMatchesService() {
+        this(new MatchDaoImpl(), new PlayerDaoImpl());
+    }
+
+    public SampleMatchesService(MatchDao matchDao, PlayerDao playerDao) {
+        this.matchDao = matchDao;
+        this.playerDao = playerDao;
+    }
 
     public void saveSampleMatches(int numberOfMatches) {
         List<String> playerNames = ResourceReader.readLines(SAMPLE_PLAYER_NAMES);

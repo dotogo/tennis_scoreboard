@@ -10,8 +10,17 @@ import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import java.util.Objects;
 
 public class FinishedMatchesPersistenceService {
-    private final MatchDao matchDao = new MatchDaoImpl();
-    private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+    private final MatchDao matchDao;
+    private final MatchScoreCalculationService matchScoreCalculationService;
+
+    public FinishedMatchesPersistenceService() {
+        this(new MatchDaoImpl(), new MatchScoreCalculationService());
+    }
+
+    public FinishedMatchesPersistenceService(MatchDao matchDao, MatchScoreCalculationService matchScoreCalculationService) {
+        this.matchDao = matchDao;
+        this.matchScoreCalculationService = matchScoreCalculationService;
+    }
 
     public void persistMatch(OngoingMatch ongoingMatch) {
         Objects.requireNonNull(ongoingMatch, "Match cannot be null");

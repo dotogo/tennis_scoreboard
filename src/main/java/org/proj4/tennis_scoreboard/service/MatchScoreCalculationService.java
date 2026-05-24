@@ -15,9 +15,6 @@ public class MatchScoreCalculationService {
 
 
     public void updateMatchScore(OngoingMatch match, String pointWinner) {
-        // update score
-        System.out.println("Match score calculation. Add point: " + pointWinner);
-
         String unexpectedPointWinner = POINT_WINNER_ERROR.formatted(pointWinner, POINT_WINNER_PLAYER1, POINT_WINNER_PLAYER2);
 
         PlayerScore winnerPlayerScore = switch (pointWinner) {
@@ -56,7 +53,6 @@ public class MatchScoreCalculationService {
         if (isSetWon(winnerPlayerScore, opponentScore)) {
             incrementSet(winnerPlayerScore, opponentScore);
         }
-
     }
 
     public boolean isFinishedMatch(PlayerScore firstPlayerScore, PlayerScore secondPlayerScore) {
@@ -95,7 +91,6 @@ public class MatchScoreCalculationService {
 
         winnerPlayerScore.setPoints(Point.LOVE);
         opponentScore.setPoints(Point.LOVE);
-
     }
 
     private void incrementGame(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
@@ -124,7 +119,6 @@ public class MatchScoreCalculationService {
     private boolean isTieBreakWillBeWon(PlayerScore winnerPlayerScore, PlayerScore opponentScore) {
         int winnerTieBreak = winnerPlayerScore.getTieBreak();
         int opponentTieBreak = opponentScore.getTieBreak();
-
 
         return (winnerTieBreak >= 6) && ((winnerTieBreak - opponentTieBreak) >= 1);
     }
