@@ -29,6 +29,12 @@
     <button type="submit" class="btn-submit">Start Match</button>
 </form>
 
+<c:if test="${not empty error_message}">
+    <div class="alert alert-danger" style="white-space: pre-line;">
+        <c:out value="${error_message}" />
+    </div>
+</c:if>
+
 <div class="nav-links">
     <a href="${pageContext.request.contextPath}/matches">📋 View all matches</a>
 </div>

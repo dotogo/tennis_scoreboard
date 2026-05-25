@@ -81,10 +81,9 @@ public class SampleMatchesService {
         return players.subList(0, 2);
     }
 
-    private <T> void checkListForEmpty(List<T> items) {
+    private void checkListForEmpty(List<?> items) {
         if (items == null || items.isEmpty()) {
             throw new IllegalArgumentException("The list cannot be empty");
         }
     }
-
 }

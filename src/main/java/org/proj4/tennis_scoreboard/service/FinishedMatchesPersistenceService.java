@@ -10,6 +10,9 @@ import org.proj4.tennis_scoreboard.entity.PlayerScore;
 import java.util.Objects;
 
 public class FinishedMatchesPersistenceService {
+    private static final String MATCH_CANNOT_BE_NULL = "Match cannot be null";
+    private static final String MATCH_MUST_BE_FINISHED = "Match must be finished";
+    private static final String FINISHED_MATCH_MUST_HAVE_WINNER = "Finished Match must have a winner";
     private final MatchDao matchDao;
     private final MatchScoreCalculationService matchScoreCalculationService;
 
@@ -23,13 +26,13 @@ public class FinishedMatchesPersistenceService {
     }
 
     public void persistMatch(OngoingMatch ongoingMatch) {
-        Objects.requireNonNull(ongoingMatch, "Match cannot be null");
+        Objects.requireNonNull(ongoingMatch, MATCH_CANNOT_BE_NULL);
 
         PlayerScore firstPlayerScore = ongoingMatch.getFirstPlayerScore();
         PlayerScore secondPlayerScore = ongoingMatch.getSecondPlayerScore();
 
         if (!matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore)) {
-            throw new IllegalStateException("Match must be finished");
+            throw new IllegalStateException(MATCH_MUST_BE_FINISHED);
         }
 
         Match match = new Match();
@@ -37,14 +40,10 @@ public class FinishedMatchesPersistenceService {
         match.setSecondPlayer(ongoingMatch.getSecondPlayer());
 
         Player winner = matchScoreCalculationService.getWinner(ongoingMatch)
-                .orElseThrow(() -> new IllegalStateException("Finished match must have a winner"));
+                .orElseThrow(() -> new IllegalStateException(FINISHED_MATCH_MUST_HAVE_WINNER));
 
         match.setWinner(winner);
 
         matchDao.save(match);
-
-        System.out.println("Persisting match between: " + match.getFirstPlayer().getName() +
-                           " and " + match.getSecondPlayer().getName());
     }
-
 }

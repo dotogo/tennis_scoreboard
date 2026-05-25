@@ -1,7 +1,10 @@
 package org.proj4.tennis_scoreboard.servlet;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,7 +18,6 @@ import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 import org.proj4.tennis_scoreboard.service.PlayerService;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ class MatchServletTest {
     @Mock
     private HttpServletResponse resp;
     @Mock
-    private PrintWriter out;
+    RequestDispatcher dispatcher;
     @Mock
     private PlayerService playerService;
     @Mock
@@ -42,20 +44,21 @@ class MatchServletTest {
     @InjectMocks
     private MatchServlet matchServlet;
 
-
     @ParameterizedTest (name = "{0}")
     @MethodSource("getArgumentsForParametersInvalidOrEmptyTest")
-    void badRequestStatusIfParametersInvalidOrEmpty(String description, Map<String, String[]> parameterMapStub) throws IOException {
-        doReturn(out).when(resp).getWriter();
+    @DisplayName("Forward to new-match.jsp if parameters are invalid or empty")
+    void forwardToNewMatchJspIfParametersInvalidOrEmpty(String description, Map<String, String[]> parameterMapStub) throws IOException, ServletException {
+        doReturn(dispatcher).when(req).getRequestDispatcher(anyString());
         doReturn(parameterMapStub).when(req).getParameterMap();
 
         matchServlet.doPost(req, resp);
 
-        verify(resp).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        verify(req).getRequestDispatcher("/WEB-INF/views/new-match.jsp");
     }
 
     @Test
-    void redirectToOngoingMatchPage() throws IOException {
+    @DisplayName("Redirect to ongoing match page")
+    void redirectToOngoingMatchPage() throws IOException, ServletException {
         Map<String, String[]> parameterMapStub = Map.of("first-player", new String[]{"firstName"}, "second-player", new String[]{"secondName"});
 
         doReturn(parameterMapStub).when(req).getParameterMap();

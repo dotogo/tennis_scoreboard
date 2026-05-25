@@ -21,7 +21,9 @@ public class MatchServlet extends BaseServlet {
     private static final String PARAM_FIRST_PLAYER = "first-player";
     private static final String PARAM_SECOND_PLAYER = "second-player";
 
-    private static final String REQUIRED_PARAMETERS_MISSING = "One or more parameters have invalid names or are missing. " +
+    private static final String ATTR_ERROR_MESSAGE = "error_message";
+
+    private static final String REQUIRED_PARAMETERS_MISSING = "One or more parameters have invalid names or are missing.\n " +
                                                               "Required parameters: \"%s\", \"%s\"".formatted(PARAM_FIRST_PLAYER, PARAM_SECOND_PLAYER);
 
     private static final String FIRST_PLAYER_EMPTY = "First player name cannot be empty.";
@@ -55,12 +57,12 @@ public class MatchServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Map<String, String[]> parameterMap = req.getParameterMap();
 
         if (!parameterMap.containsKey(PARAM_FIRST_PLAYER) || !parameterMap.containsKey(PARAM_SECOND_PLAYER)) {
 
-            sendErrorResponse(resp, REQUIRED_PARAMETERS_MISSING);
+            sendErrorForward(req, resp, REQUIRED_PARAMETERS_MISSING);
             return;
         }
 
@@ -68,17 +70,17 @@ public class MatchServlet extends BaseServlet {
         String secondPlayerName = parameterMap.get(PARAM_SECOND_PLAYER)[0];
 
         if (firstPlayerName == null || firstPlayerName.trim().isBlank()) {
-            sendErrorResponse(resp, FIRST_PLAYER_EMPTY);
+            sendErrorForward(req, resp, FIRST_PLAYER_EMPTY);
             return;
         }
 
         if (secondPlayerName == null || secondPlayerName.trim().isBlank()) {
-            sendErrorResponse(resp, SECOND_PLAYER_EMPTY);
+            sendErrorForward(req, resp, SECOND_PLAYER_EMPTY);
             return;
         }
 
         if (firstPlayerName.trim().equals(secondPlayerName.trim())) {
-            sendErrorResponse(resp, SAME_PLAYER_NAMES);
+            sendErrorForward(req, resp, SAME_PLAYER_NAMES);
             return;
         }
 
@@ -92,12 +94,17 @@ public class MatchServlet extends BaseServlet {
             resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
 
         } catch (Exception e) {
-            sendErrorResponse(resp, e.getMessage());
+            sendErrorForward(req, resp, e.getMessage() );
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/views/new-match.jsp").forward(req, resp);
+    }
+
+    private void sendErrorForward(HttpServletRequest req, HttpServletResponse resp, Object attribute) throws IOException, ServletException {
+        req.setAttribute(ATTR_ERROR_MESSAGE, attribute);
         req.getRequestDispatcher("/WEB-INF/views/new-match.jsp").forward(req, resp);
     }
 }

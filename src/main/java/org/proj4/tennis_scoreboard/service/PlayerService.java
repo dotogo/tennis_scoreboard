@@ -7,6 +7,8 @@ import org.proj4.tennis_scoreboard.exception.InvalidParameterException;
 import org.proj4.tennis_scoreboard.util.Validator;
 
 public class PlayerService {
+    private static final String INVALID_PLAYER_NAME = "Invalid player name. \n Alphanumeric (Eng/Rus), space and the characters _.`- are allowed. " +
+                                                      "\n Profanity is prohibited.";
     private final PlayerDao playerDao;
 
     public PlayerService() {
@@ -19,7 +21,7 @@ public class PlayerService {
 
     public Player findOrCreate(String playerName) {
         if (!Validator.isValidName(playerName)) {
-            throw new InvalidParameterException("Invalid player name. Player name must be alphanumeric (Eng/Rus) and may contain the characters _.`- and space.");
+            throw new InvalidParameterException(INVALID_PLAYER_NAME);
         }
 
         return playerDao.findByName(playerName)
