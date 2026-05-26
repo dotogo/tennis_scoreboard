@@ -1,3 +1,5 @@
+
+/* ===== 1. Global styles (for all pages) ===== */
 h3 a {
     text-decoration: none;
     color: inherit;
@@ -5,86 +7,6 @@ h3 a {
 
 h3 a:hover {
     color: #007bff;
-}
-
-.score-table {
-    width: 80%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-.score-table th, .score-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-.score-table th {
-    background-color: #f2f2f2;
-}
-.action-button {
-    padding: 6px 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-.action-button:hover {
-    background-color: #45a049;
-}
-.action-form {
-    display: inline;
-    margin: 0;
-    padding: 0;
-}
-
-/* Styles for field containers */
-.form-group {
-    margin-bottom: 15px;
-}
-
-/* Styles for labels (label) */
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-/* Styles for text fields */
-.form-group input[type="text"] {
-    width: 300px;
-    max-width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-/* Styles for button */
-.btn-submit,
-.start-new-match,
-.match-results,
-.sample-matches{
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.start-new-match {
-    background-color: #4fb8ee;
-}
-
-.sample-matches {
-    background-color: lightcoral;
-}
-
-.btn-submit:hover {
-    background-color: #45a049;
 }
 
 .nav-links {
@@ -107,8 +29,267 @@ h3 a:hover {
     background-color: #45a049;
 }
 
-/* ========== Styles for the error page ========== */
+/* ===== 2. Styles for matches.jsp ===== */
+.matches-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
 
+.matches-table th,
+.matches-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.matches-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.matches-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.matches-table tr:hover {
+    background-color: #e9e9e9;
+}
+
+.winner-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.winner-badge {
+    display: inline-grid;
+    grid-template-columns: 20px 1fr;
+    align-items: center;
+    text-align: left;
+    width: fit-content;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.winner-badge.even::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4fb8ee;
+    flex-shrink: 0;
+}
+
+.winner-badge.odd::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    flex-shrink: 0;
+}
+
+.winner-badge.even {
+    color: #6a9dae;
+}
+
+.winner-badge.odd {
+    color: #6a9dae;
+}
+
+.no-matches {
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+.player-selection {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-field {
+    width: 20%;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #67a9f0;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2777cd;
+}
+
+.btn-secondary {
+    background-color: #7f8891;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+/* ----- Pagination ----- */
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 20px 0 10px;
+    font-family: Arial, sans-serif;
+}
+
+.pagination a,
+.pagination .page-btn {
+    display: inline-block;
+    min-width: 36px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.pagination a:hover {
+    background-color: #e9e9e9;
+}
+
+.pagination .page-current {
+    display: inline-block;
+    min-width: 36px;
+    padding: 6px 10px;
+    border: 1px solid #4CAF50;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #4CAF50;
+}
+
+.pagination .page-disabled {
+    display: inline-block;
+    min-width: 36px;
+    padding: 6px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    color: #bbb;
+    background-color: #fafafa;
+    cursor: default;
+}
+
+.pagination-info {
+    font-size: 13px;
+    color: #888;
+    margin: 4px 0 16px;
+}
+
+/* ===== 3. Styles for the new-match.jsp ===== */
+.score-table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.score-table th, .score-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.score-table th {
+    background-color: #f2f2f2;
+}
+
+.action-button {
+    padding: 6px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.action-button:hover {
+    background-color: #45a049;
+}
+
+.action-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"] {
+    width: 300px;
+    max-width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.btn-submit,
+.start-new-match,
+.match-results,
+.sample-matches {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.start-new-match {
+    background-color: #4fb8ee;
+}
+
+.sample-matches {
+    background-color: lightcoral;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+/* ===== 4. Styles for error.jsp ===== */
 .error-container {
     max-width: 600px;
     margin: 50px auto;
@@ -118,19 +299,16 @@ h3 a:hover {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Error message */
 .error-container h1 {
     color: #d32f2f;
     margin-bottom: 20px;
     font-size: 28px;
 }
 
-/* Block with an image */
 .error-image {
     margin: 20px 0;
 }
 
-/* Error image */
 .error-image img {
     max-width: 200px;
     height: auto;
@@ -147,7 +325,6 @@ h3 a:hover {
     text-align: left;
 }
 
-/* Back to Home */
 .back-link {
     display: inline-block;
     margin-top: 10px;
@@ -163,4 +340,38 @@ h3 a:hover {
     background-color: #45a049;
     text-decoration: none;
     color: white;
+}
+
+/* ===== 5. Mobile responsiveness. ===== */
+@media (max-width: 768px) {
+    .error-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .error-container h1 {
+        font-size: 24px;
+    }
+
+    .error-image img {
+        max-width: 150px;
+    }
+
+    .error-message {
+        font-size: 14px;
+    }
+
+    .matches-table th,
+    .matches-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .player-selection {
+        flex-direction: column;
+    }
+
+    .filter-field {
+        width: 80%;
+    }
 }

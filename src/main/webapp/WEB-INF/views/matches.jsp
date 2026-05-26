@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Matches</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/matches-style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
 <c:set var="baseUrl" value="${pageContext.request.contextPath}/matches" />
