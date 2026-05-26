@@ -106,5 +106,6 @@ public class MatchServlet extends BaseServlet {
     private void sendErrorForward(HttpServletRequest req, HttpServletResponse resp, Object attribute) throws IOException, ServletException {
         req.setAttribute(ATTR_ERROR_MESSAGE, attribute);
         req.getRequestDispatcher("/WEB-INF/views/new-match.jsp").forward(req, resp);
+//        req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
     }
 }

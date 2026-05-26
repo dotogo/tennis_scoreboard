@@ -23,7 +23,9 @@ public class MatchScoreServlet extends BaseServlet {
     private static final String ATTR_MATCH = "match";
     private static final String PARAM_POINT_WINNER = "point-winner";
     private static final String INVALID_UUID = "Invalid UUID";
-    private static final String ERROR_GETTING_MATCH = "Something went wrong while getting ongoing match";
+    private static final String ERROR_GETTING_MATCH = "Something went wrong while getting ongoing match or a match with\n" +
+                                                      "UUID = %s does not exist";
+    private static final String ATTR_ERROR_MESSAGE = "error_message";
 
     private OngoingMatchesService ongoingMatchesService;
     private MatchScoreCalculationService matchScoreCalculationService;
@@ -66,7 +68,7 @@ public class MatchScoreServlet extends BaseServlet {
         String uuidFromParameter = req.getParameter(PARAM_UUID);
 
         if (!Validator.isValidUuid(uuidFromParameter)) {
-            sendErrorResponse(resp, INVALID_UUID);
+            sendErrorForward(req, resp, INVALID_UUID);
             return;
         }
 
@@ -80,7 +82,7 @@ public class MatchScoreServlet extends BaseServlet {
         }
 
         if (matchOptional.isEmpty()) {
-            sendErrorResponse(resp, ERROR_GETTING_MATCH);
+            sendErrorForward(req, resp, ERROR_GETTING_MATCH.formatted(uuidFromParameter));
         }
     }
 
@@ -89,7 +91,7 @@ public class MatchScoreServlet extends BaseServlet {
         String uuidFromParameter = req.getParameter(PARAM_UUID);
 
         if (!Validator.isValidUuid(uuidFromParameter)) {
-            sendErrorResponse(resp, INVALID_UUID);
+            sendErrorForward(req, resp, INVALID_UUID);
             return;
         }
 
@@ -126,5 +128,10 @@ public class MatchScoreServlet extends BaseServlet {
 
         req.setAttribute(ATTR_MATCH, match);
         req.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(req, resp);
+    }
+
+    private void sendErrorForward(HttpServletRequest req, HttpServletResponse resp, Object attribute) throws IOException, ServletException {
+        req.setAttribute(ATTR_ERROR_MESSAGE, attribute);
+        req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
     }
 }

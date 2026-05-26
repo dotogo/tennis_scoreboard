@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
+<h3>
+    <a href="${pageContext.request.contextPath}/">
+        Tennis Scoreboard
+    </a>
+</h3>
+
 <h1>Final score</h1>
 <c:if test="${not empty match}">
     <h3>${match.firstPlayer.name}: ${match.firstPlayerScore.sets}</h3>

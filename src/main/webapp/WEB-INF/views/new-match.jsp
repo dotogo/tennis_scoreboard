@@ -30,7 +30,7 @@
 </form>
 
 <c:if test="${not empty error_message}">
-    <div class="alert alert-danger" style="white-space: pre-line;">
+    <div class="error-message" style="white-space: pre-line;">
         <c:out value="${error_message}" />
     </div>
 </c:if>

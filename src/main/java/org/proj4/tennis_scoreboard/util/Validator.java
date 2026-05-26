@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 public class Validator {
     private static final int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 32;
+    private static final int UUID_LENGTH = 36;
 
     private static final String ENGLISH_PROFANITY_WORDS = "en_profanity_words.txt";
     private static final String RUSSIAN_PROFANITY_WORDS = "ru_profanity_words.txt";
@@ -39,7 +40,7 @@ public class Validator {
     }
 
     public static boolean isValidUuid(String uuid) {
-        if (uuid == null || uuid.length() != 36) {
+        if (uuid == null || uuid.length() != UUID_LENGTH) {
             return false;
         }
         return UUID_PATTERN.matcher(uuid).matches();
