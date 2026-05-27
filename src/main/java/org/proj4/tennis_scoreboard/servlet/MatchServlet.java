@@ -13,6 +13,7 @@ import org.proj4.tennis_scoreboard.service.PlayerService;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -85,8 +86,9 @@ public class MatchServlet extends BaseServlet {
         }
 
         try {
-            Player first = playerService.findOrCreate(firstPlayerName);
-            Player second = playerService.findOrCreate(secondPlayerName);
+            List<Player> players = playerService.findOrCreate(firstPlayerName, secondPlayerName);
+            Player first = players.get(0);
+            Player second = players.get(1);
 
             OngoingMatch ongoingMatch = new OngoingMatch(first, second, new PlayerScore(), new PlayerScore());
             UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
@@ -106,6 +108,5 @@ public class MatchServlet extends BaseServlet {
     private void sendErrorForward(HttpServletRequest req, HttpServletResponse resp, Object attribute) throws IOException, ServletException {
         req.setAttribute(ATTR_ERROR_MESSAGE, attribute);
         req.getRequestDispatcher("/WEB-INF/views/new-match.jsp").forward(req, resp);
-//        req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
     }
 }

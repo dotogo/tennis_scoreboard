@@ -2,9 +2,7 @@ package org.proj4.tennis_scoreboard.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +20,19 @@ public class Validator {
 
     private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-ZА-Яа-яЁё0-9_.` -]+$");
+
+    private static final Map<Character, Character> CYRILLIC_TO_LATIN_HOMOGLYPHS = new HashMap<>();
+
+    static {
+        String cyrillicAndZero = "АВЕКМНОРСТУХасеорух0";
+        String latinAndZero = "ABEKMHOPCTYXaceopyxO";
+
+        for (int i = 0; i < cyrillicAndZero.length(); i++) {
+            char cyrillicLetter = cyrillicAndZero.charAt(i);
+            char latinLetter = latinAndZero.charAt(i);
+            CYRILLIC_TO_LATIN_HOMOGLYPHS.put(cyrillicLetter, latinLetter);
+        }
+    }
 
     static {
         List<String> profanityRu = ResourceReader.readLines(RUSSIAN_PROFANITY_WORDS);
@@ -62,6 +73,23 @@ public class Validator {
         }
 
         return !isProfanityWord(name);
+    }
+
+    public boolean isTwoNamesTooMuchSimilar(String firstName, String secondName) {
+        String firstSkeleton = toLatinSkeleton(firstName);
+        String secondSkeleton = toLatinSkeleton(secondName);
+        return firstSkeleton.equals(secondSkeleton);
+    }
+
+    private String toLatinSkeleton(String name) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < name.length(); i++) {
+            char fromName = name.charAt(i);
+            Character toResult = CYRILLIC_TO_LATIN_HOMOGLYPHS.getOrDefault(fromName, fromName);
+            result.append(toResult);
+        }
+        return result.toString().trim().toLowerCase();
     }
 
     private static boolean isProfanityWord(String word) {

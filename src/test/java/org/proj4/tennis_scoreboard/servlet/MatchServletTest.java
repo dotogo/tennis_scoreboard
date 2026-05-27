@@ -20,9 +20,7 @@ import org.proj4.tennis_scoreboard.service.PlayerService;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
@@ -65,9 +63,9 @@ class MatchServletTest {
 
         UUID uuid = UUID.randomUUID();
 
-        Player player = new Player();
+        List<Player> players = List.of(new Player(), new Player());
 
-        doReturn(player).when(playerService).findOrCreate(anyString());
+        doReturn(players).when(playerService).findOrCreate(anyString(), anyString());
         doReturn(uuid).when(ongoingMatchesService).addMatch(any());
 
         matchServlet.doPost(req, resp);
