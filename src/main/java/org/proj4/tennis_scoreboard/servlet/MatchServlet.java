@@ -7,8 +7,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.entity.*;
-import org.proj4.tennis_scoreboard.exception.DaoException;
-import org.proj4.tennis_scoreboard.exception.ServiceException;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 import org.proj4.tennis_scoreboard.service.PlayerService;
 
@@ -18,8 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @WebServlet("/new-match")
 public class MatchServlet extends BaseServlet {
@@ -35,8 +31,6 @@ public class MatchServlet extends BaseServlet {
     private static final String SECOND_PLAYER_EMPTY = "Second player name cannot be empty.";
     private static final String SAME_PLAYER_NAMES = "Player names cannot be the same.";
     private static final String SOMETHING_WENT_WRONG = "OOPS! Something went wrong :(";
-
-    private static final Logger log = LoggerFactory.getLogger(MatchServlet.class);
 
     private PlayerService playerService;
     private OngoingMatchesService ongoingMatchesService;
@@ -92,20 +86,14 @@ public class MatchServlet extends BaseServlet {
             return;
         }
 
-        try {
-            List<Player> players = playerService.findOrCreate(firstPlayerName, secondPlayerName);
-            Player first = players.get(0);
-            Player second = players.get(1);
+        List<Player> players = playerService.findOrCreate(firstPlayerName, secondPlayerName);
+        Player first = players.get(0);
+        Player second = players.get(1);
 
-            OngoingMatch ongoingMatch = new OngoingMatch(first, second, new PlayerScore(), new PlayerScore());
-            UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
+        OngoingMatch ongoingMatch = new OngoingMatch(first, second, new PlayerScore(), new PlayerScore());
+        UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
 
-            resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
-
-        } catch (DaoException | ServiceException e) {
-            sendErrorForward(req, resp, SOMETHING_WENT_WRONG);
-            log.error(e.getMessage(), e);
-        }
+        resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
     }
 
     @Override
