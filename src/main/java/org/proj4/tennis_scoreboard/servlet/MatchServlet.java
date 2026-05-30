@@ -7,6 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.entity.*;
+import org.proj4.tennis_scoreboard.exception.DaoException;
+import org.proj4.tennis_scoreboard.exception.ServiceException;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 import org.proj4.tennis_scoreboard.service.PlayerService;
 
@@ -16,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/new-match")
 public class MatchServlet extends BaseServlet {
@@ -30,6 +34,9 @@ public class MatchServlet extends BaseServlet {
     private static final String FIRST_PLAYER_EMPTY = "First player name cannot be empty.";
     private static final String SECOND_PLAYER_EMPTY = "Second player name cannot be empty.";
     private static final String SAME_PLAYER_NAMES = "Player names cannot be the same.";
+    private static final String SOMETHING_WENT_WRONG = "OOPS! Something went wrong :(";
+
+    private static final Logger log = LoggerFactory.getLogger(MatchServlet.class);
 
     private PlayerService playerService;
     private OngoingMatchesService ongoingMatchesService;
@@ -95,8 +102,9 @@ public class MatchServlet extends BaseServlet {
 
             resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
 
-        } catch (Exception e) {
-            sendErrorForward(req, resp, e.getMessage() );
+        } catch (DaoException | ServiceException e) {
+            sendErrorForward(req, resp, SOMETHING_WENT_WRONG);
+            log.error(e.getMessage(), e);
         }
     }
 
