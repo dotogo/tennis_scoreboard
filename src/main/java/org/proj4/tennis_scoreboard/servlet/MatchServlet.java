@@ -70,12 +70,12 @@ public class MatchServlet extends BaseServlet {
         String firstPlayerName = parameterMap.get(PARAM_FIRST_PLAYER)[0];
         String secondPlayerName = parameterMap.get(PARAM_SECOND_PLAYER)[0];
 
-        if (firstPlayerName == null || firstPlayerName.trim().isBlank()) {
+        if (firstPlayerName.isBlank()) {
             sendErrorForward(req, resp, FIRST_PLAYER_EMPTY);
             return;
         }
 
-        if (secondPlayerName == null || secondPlayerName.trim().isBlank()) {
+        if (secondPlayerName.isBlank()) {
             sendErrorForward(req, resp, SECOND_PLAYER_EMPTY);
             return;
         }
