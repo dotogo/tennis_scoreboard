@@ -6,9 +6,10 @@ import org.proj4.tennis_scoreboard.entity.OngoingMatch;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class OngoingMatchesService {
-    private static final Cache<UUID, OngoingMatch> ongoingMatches = Caffeine.newBuilder().build();
+    private static final Cache<UUID, OngoingMatch> ongoingMatches = Caffeine.newBuilder().expireAfterAccess(15, TimeUnit.MINUTES).build();
 
     public Optional<OngoingMatch> getMatch(UUID id) {
         OngoingMatch ongoingMatch = ongoingMatches.getIfPresent(id);
