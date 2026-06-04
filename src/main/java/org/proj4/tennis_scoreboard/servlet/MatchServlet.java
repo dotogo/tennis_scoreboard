@@ -4,6 +4,7 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.entity.*;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @WebServlet("/new-match")
-public class MatchServlet extends BaseServlet {
+public class MatchServlet extends HttpServlet {
     private static final String PARAM_FIRST_PLAYER = "first-player";
     private static final String PARAM_SECOND_PLAYER = "second-player";
 

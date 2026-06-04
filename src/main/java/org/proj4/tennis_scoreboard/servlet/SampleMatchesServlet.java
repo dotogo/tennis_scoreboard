@@ -3,6 +3,7 @@ package org.proj4.tennis_scoreboard.servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.service.SampleMatchesService;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @WebServlet ("/sample-matches")
-public class SampleMatchesServlet extends BaseServlet {
+public class SampleMatchesServlet extends HttpServlet {
     private static final AtomicBoolean canLaunch = new AtomicBoolean(true);
     private SampleMatchesService sampleMatchesService;
 

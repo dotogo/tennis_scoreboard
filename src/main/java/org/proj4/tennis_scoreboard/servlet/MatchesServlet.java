@@ -3,6 +3,7 @@ package org.proj4.tennis_scoreboard.servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.dto.MatchDto;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/matches")
-public class MatchesServlet extends BaseServlet {
+public class MatchesServlet extends HttpServlet {
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_NAME_FILTER = "filter_by_player_name";
     private static final String PLAYER_NOT_FOUND = "Player not found";

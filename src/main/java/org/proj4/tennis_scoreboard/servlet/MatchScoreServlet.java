@@ -4,6 +4,7 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.util.Validator;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @WebServlet("/match-score")
-public class MatchScoreServlet extends BaseServlet {
+public class MatchScoreServlet extends HttpServlet {
     private static final String PARAM_UUID = "uuid";
     private static final String ATTR_MATCH = "match";
     private static final String PARAM_POINT_WINNER = "point-winner";
