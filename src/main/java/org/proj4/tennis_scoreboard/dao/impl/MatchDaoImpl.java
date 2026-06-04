@@ -6,54 +6,53 @@ import org.hibernate.query.Query;
 import org.proj4.tennis_scoreboard.dao.MatchDao;
 import org.proj4.tennis_scoreboard.entity.Match;
 import org.proj4.tennis_scoreboard.entity.Player;
+import org.proj4.tennis_scoreboard.exception.DaoException;
 import org.proj4.tennis_scoreboard.util.HibernateUtil;
 
 import java.util.List;
 
 public class MatchDaoImpl implements MatchDao {
+    private static final String ERROR_SAVE_ALL_MATCHES = "Error saving all matches.";
+    private static final String ERROR_SAVE_MATCH = "Error saving match.";
+    private static final String ERROR_GETTING_ALL_MATCHES = "Error getting all matches.";
+    private static final String ERROR_FIND_BY_PLAYERS = "Error searching matches by players.";
+    private static final String ERROR_COUNT_ALL = "Error counting all matches.";
+    private static final String ERROR_COUNT_ALL_BY_PLAYER = "Error counting all matches by player.";
+
     public Match save(Match match) {
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            session.beginTransaction();
+            try {
+                session.beginTransaction();
+                session.persist(match);
+                session.getTransaction().commit();
 
-            session.persist(match);
-            session.getTransaction().commit();
-
-        } catch (Exception e) {
-            // TODO make custom exception
-            e.printStackTrace();
+            } catch (Exception e) {
+                handleException(e, session.getTransaction(), ERROR_SAVE_MATCH);
+            }
         }
         return match;
     }
 
     public List<Match> saveAll(List<Match> matches) {
-        Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            try {
+                session.beginTransaction();
 
-            for (Match match : matches) {
-                session.persist(match);
+                for (Match match : matches) {
+                    session.persist(match);
+                }
+
+                session.getTransaction().commit();
+
+            } catch (Exception e) {
+                handleException(e, session.getTransaction(), ERROR_SAVE_ALL_MATCHES);
             }
-
-            transaction.commit();
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            // TODO make custom exception
-            throw new RuntimeException("Error saving matches", e);
+            return matches;
         }
-        return matches;
     }
 
     public List<Match> getAllMatches(int page, int pageSize) {
-        Transaction transaction = null;
-        List<Match> matches = List.of();
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
-            transaction = session.beginTransaction();
 
             int offset = (page - 1) * pageSize;
 
@@ -69,24 +68,14 @@ public class MatchDaoImpl implements MatchDao {
             query.setFirstResult(offset);
             query.setMaxResults(pageSize);
 
-            matches = query.getResultList();
-
-            transaction.commit();
+            return query.getResultList();
 
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-
-                // TODO make custom exception
-                throw new RuntimeException("Error while getting all matches", e);
-            }
+            throw new DaoException(ERROR_GETTING_ALL_MATCHES, e);
         }
-        return matches;
     }
 
     public List<Match> findByPlayers(List<Player> players, int page, int pageSize) {
-        List<Match> matches;
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             int offset = (page - 1) * pageSize;
 
@@ -103,37 +92,28 @@ public class MatchDaoImpl implements MatchDao {
             query.setParameter("players", players);
             query.setFirstResult(offset);
             query.setMaxResults(pageSize);
-            matches = query.getResultList();
+
+            return query.getResultList();
 
         } catch (Exception e) {
-            // TODO make custom exception
-            throw new RuntimeException("Error while finding matches by players.", e);
+            throw new DaoException(ERROR_FIND_BY_PLAYERS, e);
         }
-        return matches;
     }
 
     public int countAll() {
-        Long count;
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
             String hql = "select count(m) from Match m";
             Query<Long> query = session.createQuery(hql, Long.class);
-            count = query.getSingleResult();
+
+            return query.getSingleResult().intValue();
 
         } catch (Exception e) {
-                // TODO make custom exception
-                throw new RuntimeException("Error while counting all matches", e);
-            }
-
-        return count.intValue();
+            throw new DaoException(ERROR_COUNT_ALL, e);
+        }
     }
 
     public int countAllByPlayers(List<Player> players) {
-        Long count;
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
             String hql = """
                         select count(m) from Match m
                         where firstPlayer IN :players
@@ -141,13 +121,18 @@ public class MatchDaoImpl implements MatchDao {
                         """;
             Query<Long> query = session.createQuery(hql, Long.class);
             query.setParameter("players", players);
-            count = query.getSingleResult();
+
+            return query.getSingleResult().intValue();
 
         } catch (Exception e) {
-            // TODO make custom exception
-            throw new RuntimeException("Error while counting all matches by players", e);
+            throw new DaoException(ERROR_COUNT_ALL_BY_PLAYER, e);
         }
+    }
 
-        return count.intValue();
+    private void handleException(Exception e, Transaction transaction, String message) {
+        if (transaction != null && transaction.getStatus().canRollback()) {
+            transaction.rollback();
+        }
+        throw new DaoException(message, e);
     }
 }

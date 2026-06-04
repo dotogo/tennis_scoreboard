@@ -22,30 +22,25 @@ public class PlayerDaoImpl implements PlayerDao {
 
     public Optional<Player> findByName(String name) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            try {
-                Query<Player> query = session.createQuery("from Player where name = :name", Player.class);
-                query.setParameter("name", name);
+            Query<Player> query = session.createQuery("from Player where name = :name", Player.class);
+            query.setParameter("name", name);
 
-                return query.uniqueResultOptional();
+            return query.uniqueResultOptional();
 
-            } catch (Exception e) {
-                throw new DaoException(ERROR_FINDING_BY_NAME, e);
-            }
+        } catch (Exception e) {
+            throw new DaoException(ERROR_FINDING_BY_NAME, e);
         }
     }
 
     public List<Player> findByNameLike(String nameLike) {
-
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            try {
-                Query<Player> query = session.createQuery("from Player where lower(name) LIKE lower(:nameLike)", Player.class);
-                query.setParameter("nameLike", "%" + nameLike.trim().toLowerCase() + "%");
+            Query<Player> query = session.createQuery("from Player where lower(name) LIKE lower(:nameLike)", Player.class);
+            query.setParameter("nameLike", "%" + nameLike.trim().toLowerCase() + "%");
 
-                return query.list();
+            return query.list();
 
-            } catch (Exception e) {
-                throw new DaoException(ERROR_FINDING_BY_NAME_LIKE, e);
-            }
+        } catch (Exception e) {
+            throw new DaoException(ERROR_FINDING_BY_NAME_LIKE, e);
         }
     }
 
