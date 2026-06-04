@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Полезные переменные для кастомизации путей и уровней -->
+    <property name="LOG_DIR" value="${catalina.base}/logs/myapp" />
+    <property name="LOG_FILE_NAME" value="application" />
+
+    <!-- 1. АППЕНДЕР ДЛЯ ВЫВОДА В КОНСОЛЬ (С подсветкой цветов) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--
+               %d{yyyy-MM-dd HH:mm:ss.SSS} - дата и точное время
+               %highlight(%-5level) - уровень лога (INFO, ERROR и т.д.) подсвечен цветом
+               %magenta([%thread]) - имя потока выделено пурпурным
+               %cyan(%logger{36}) - имя класса сокращено до 36 символов и выделено голубым
+               %msg%n - само сообщение и перенос строки
+            -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta([%thread]) %cyan(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 2. АППЕНДЕР ДЛЯ ЗАПИСИ В ФАЙЛ (С ежедневной ротацией и сжатием) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Текущий активный файл логов. Будет лежать в папке проекта /logs/application.log -->
+        <file>${LOG_DIR}/${LOG_FILE_NAME}.log</file>
+
+        <!-- Политика ротации (очистки и архивации) файлов -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--
+               Архивные файлы.
+               %d{yyyy-MM-dd} - ротация происходит каждую полночь.
+               %i - индекс файла, если за один день лог превысит размер.
+               .gz - Logback автоматически сожмет старый лог в архив, экономя до 90% места!
+            -->
+            <fileNamePattern>${LOG_DIR}/archived/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+
+            <!-- Максимальный размер ОДНОГО файла лога перед ротацией -->
+            <maxFileSize>10MB</maxFileSize>
+
+            <!-- Сколько дней хранить историю (старые архивы удалятся автоматически) -->
+            <maxHistory>30</maxHistory>
+
+            <!-- Лимит на общий размер всех архивов на диске (защита от переполнения) -->
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <!-- Для файлов цвета отключаем (%highlight не используем), чтобы не мусорить спецсимволами ANSI -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 3. НАСТРОЙКА УРОВНЕЙ ЛОГИРОВАНИЯ ДЛЯ СТРОННИХ БИБЛИОТЕК -->
+    <!-- Отключаем лишний спам от Hibernate (показываем только предупреждения и ошибки) -->
+    <logger name="org.hibernate" level="WARN" />
+
+    <!-- 4. КОРНЕВОЙ ЛОГЕР (Управляет всем приложением) -->
+    <!-- Уровень TRACE -> DEBUG -> INFO -> WARN -> ERROR. Устанавливаем базовый INFO -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

@@ -82,6 +82,7 @@ dependency-reduced-pom.xml
 *.zip
 *.tar.gz
 *.rar
+*.gz
 temp/
 logs/
 *.dump
