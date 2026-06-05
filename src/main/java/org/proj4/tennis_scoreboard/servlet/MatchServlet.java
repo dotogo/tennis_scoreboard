@@ -31,7 +31,6 @@ public class MatchServlet extends HttpServlet {
     private static final String FIRST_PLAYER_EMPTY = "First player name cannot be empty.";
     private static final String SECOND_PLAYER_EMPTY = "Second player name cannot be empty.";
     private static final String SAME_PLAYER_NAMES = "Player names cannot be the same.";
-    private static final String SOMETHING_WENT_WRONG = "OOPS! Something went wrong :(";
 
     private PlayerService playerService;
     private OngoingMatchesService ongoingMatchesService;

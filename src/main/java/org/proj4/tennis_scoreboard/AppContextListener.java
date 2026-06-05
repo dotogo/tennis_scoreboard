@@ -9,6 +9,7 @@ import org.proj4.tennis_scoreboard.dao.PlayerDao;
 import org.proj4.tennis_scoreboard.dao.impl.MatchDaoImpl;
 import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.service.*;
+import org.proj4.tennis_scoreboard.util.HibernateUtil;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
@@ -37,6 +38,6 @@ public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-
+        HibernateUtil.getSessionFactory().close();
     }
 }

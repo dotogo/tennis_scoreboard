@@ -11,10 +11,14 @@
     <property name="connection.password"></property>
 
     <!-- Hibernate dialect -->
-<!--    <property name="dialect">org.hibernate.dialect.H2Dialect</property>-->
+<!--    Starting with Hibernate 6, the dialect is determined automatically by the database driver.-->
+<!-- <property name="dialect">org.hibernate.dialect.H2Dialect</property>-->
 
     <!-- HikariCP connection provider settings -->
-<!--    <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>-->
+<!-- For old Hibernate 4.x and old HikariCP (before HikariCP 3.0)-->
+<!-- <property name="hibernate.connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider</property>-->
+
+<!-- For modern Hibernate 6.x-->
     <property name="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property>
 
     <!-- HikariCP pool parameters -->
