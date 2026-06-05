@@ -20,6 +20,10 @@ public class MatchesServlet extends HttpServlet {
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_NAME_FILTER = "filter_by_player_name";
     private static final String PLAYER_NOT_FOUND = "Player not found";
+
+    private static final int MAXIMUM_NUMBER_OF_CHARACTERS = 50;
+    private static final String SEARCH_LENGTH_LIMIT = "Max %d characters".formatted(MAXIMUM_NUMBER_OF_CHARACTERS);
+
     private static final int PAGE_SIZE = 5;
     private static final int RANGE_PLUS_MINUS_PAGES_FOR_PAGINATION = 2;
 
@@ -41,8 +45,9 @@ public class MatchesServlet extends HttpServlet {
 
         int currentPage = getPageNumber(pageParam);
 
-        if (nameParam == null || nameParam.isEmpty()) {
+        if (nameParam == null || nameParam.isEmpty() || nameParam.length() > MAXIMUM_NUMBER_OF_CHARACTERS) {
             matches = matchService.getMatchesPaginated(currentPage, PAGE_SIZE);
+            req.setAttribute(PARAM_NAME_FILTER, SEARCH_LENGTH_LIMIT);
         } else {
             Optional<PaginatedResult<MatchDto>> matchesByPlayer = matchService.getMatchesByPlayer(nameParam, currentPage, PAGE_SIZE);
 

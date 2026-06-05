@@ -20,7 +20,7 @@
 
 <form action="${baseUrl}" method="get">
     <div class="player-selection">
-        <input type="text" name="filter_by_player_name" value="<c:out value='${filter_by_player_name}'/>" class="filter-field" >
+        <input type="text" name="filter_by_player_name" value="<c:out value='${filter_by_player_name}'/>" class="filter-field" maxlength="50">
         <input type="hidden" name="page" value="1">
         <button type="submit" class="btn btn-primary">
             🔍 Search
