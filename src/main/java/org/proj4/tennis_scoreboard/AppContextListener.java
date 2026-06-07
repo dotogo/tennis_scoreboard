@@ -11,6 +11,8 @@ import org.proj4.tennis_scoreboard.dao.impl.PlayerDaoImpl;
 import org.proj4.tennis_scoreboard.service.*;
 import org.proj4.tennis_scoreboard.util.HibernateUtil;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @WebListener
 public class AppContextListener implements ServletContextListener {
 
@@ -24,6 +26,7 @@ public class AppContextListener implements ServletContextListener {
         PlayerService playerService = new PlayerService();
         PlayerDao playerDao = new PlayerDaoImpl();
         MatchDao matchDao = new MatchDaoImpl();
+        AtomicBoolean canLaunch = new AtomicBoolean(true);
 
         ServletContext context = sce.getServletContext();
         context.setAttribute("matchService", matchService);
@@ -34,6 +37,7 @@ public class AppContextListener implements ServletContextListener {
         context.setAttribute("playerService", playerService);
         context.setAttribute("playerDao", playerDao);
         context.setAttribute("matchDao", matchDao);
+        context.setAttribute("sampleMatchesAvailable", canLaunch);
     }
 
     @Override

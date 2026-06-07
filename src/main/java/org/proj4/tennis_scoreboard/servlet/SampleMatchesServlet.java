@@ -13,7 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @WebServlet ("/sample-matches")
 public class SampleMatchesServlet extends HttpServlet {
-    private static final AtomicBoolean canLaunch = new AtomicBoolean(true);
+    private static final int NUMBER_OF_SAMPLE_MATCHES = 50;
+    private AtomicBoolean canLaunch;
     private SampleMatchesService sampleMatchesService;
 
     @Override
@@ -21,13 +22,13 @@ public class SampleMatchesServlet extends HttpServlet {
         super.init(config);
 
         this.sampleMatchesService = (SampleMatchesService) getServletContext().getAttribute("sampleMatchesService");
+        this.canLaunch = (AtomicBoolean) getServletContext().getAttribute("sampleMatchesAvailable");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (canLaunch.compareAndSet(true, false)) {
-            int numberOfMatches = 50;
-            sampleMatchesService.saveSampleMatches(numberOfMatches);
+            sampleMatchesService.saveSampleMatches(NUMBER_OF_SAMPLE_MATCHES);
         }
 
         resp.sendRedirect(req.getContextPath() + "/matches");

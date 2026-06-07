@@ -1,5 +1,9 @@
 
 /* ===== 1. Global styles (for all pages) ===== */
+h1 {
+    text-align: center;
+}
+
 h3 a {
     text-decoration: none;
     color: inherit;
@@ -342,7 +346,15 @@ h3 a:hover {
     color: white;
 }
 
-/* ===== 5. Mobile responsiveness. ===== */
+/* ===== 5. Styles for error.jsp ===== */
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== 6. Mobile responsiveness. ===== */
 @media (max-width: 768px) {
     .error-container {
         margin: 20px;
