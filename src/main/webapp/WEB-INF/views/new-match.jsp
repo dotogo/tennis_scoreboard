@@ -16,19 +16,32 @@
 </h3>
 <h1>New Match</h1>
 
-<form action="${pageContext.request.contextPath}/new-match" method="post">
-    <div class="form-group">
-        <label for="first-player">Player 1 Name:</label>
-        <input type="text" id="first-player" name="first-player" required>
-    </div>
+<div class="match-form">
+    <form action="${pageContext.request.contextPath}/new-match" method="post">
+        <div class="form-group">
+            <label for="first-player">Player 1 Name:</label>
+            <input type="text" id="first-player" name="first-player" required>
 
-    <div class="form-group">
-        <label for="second-player">Player 2 Name:</label>
-        <input type="text" id="second-player" name="second-player" required>
-    </div>
+            <div class="player-image">
+                <img src="${pageContext.request.contextPath}/images/first-player-img.jpg"
+                     alt="">
+            </div>
+        </div>
 
-    <button type="submit" class="btn-submit">Start Match</button>
-</form>
+        <div class="form-group">
+            <label for="second-player">Player 2 Name:</label>
+            <input type="text" id="second-player" name="second-player" required>
+
+            <div class="player-image">
+                <img src="${pageContext.request.contextPath}/images/second-player-img.jpg"
+                     alt="">
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Start Match</button>
+    </form>
+</div>
+
 
 <c:if test="${not empty error_message}">
     <div class="error-message" style="white-space: pre-line;">

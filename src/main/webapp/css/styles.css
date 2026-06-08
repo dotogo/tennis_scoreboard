@@ -1,5 +1,10 @@
 
 /* ===== 1. Global styles (for all pages) ===== */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 h1 {
     text-align: center;
 }
@@ -14,6 +19,11 @@ h3 a:hover {
 }
 
 .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
     margin-top: 30px;
     padding: 20px;
     border-top: 1px solid #ccc;
@@ -212,6 +222,12 @@ h3 a:hover {
 }
 
 /* ===== 3. Styles for the new-match.jsp ===== */
+.match-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
 .score-table {
     width: 80%;
     border-collapse: collapse;
@@ -286,11 +302,22 @@ h3 a:hover {
 }
 
 .sample-matches {
-    background-color: lightcoral;
+    background-color: #c6bdbd;
 }
 
 .btn-submit:hover {
     background-color: #45a049;
+}
+
+.player-image {
+    margin-top: 10px;
+}
+
+.player-image img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* ===== 4. Styles for error.jsp ===== */
@@ -346,7 +373,7 @@ h3 a:hover {
     color: white;
 }
 
-/* ===== 5. Styles for error.jsp ===== */
+/* ===== 5. Styles for index.jsp ===== */
 .scoreboard {
     display: flex;
     flex-direction: column;
@@ -354,7 +381,77 @@ h3 a:hover {
     gap: 10px;
 }
 
-/* ===== 6. Mobile responsiveness. ===== */
+.scoreboard h4 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.main-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.main-image img {
+    max-width: 800px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.sample-matches-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding: 20px;
+    border-top: 1px solid #ccc;
+}
+
+/* ===== 6. Styles for final-score.jsp ===== */
+.final-image {
+    margin: 20px 0;
+}
+
+.final-image img {
+    max-width: 600px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== 7. Styles for match-score.jsp ===== */
+.match-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+
+}
+
+.matches-image {
+    margin: 20px;
+}
+
+.matches-image img {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== 8. Mobile responsiveness. ===== */
 @media (max-width: 768px) {
     .error-container {
         margin: 20px;
@@ -385,5 +482,11 @@ h3 a:hover {
 
     .filter-field {
         width: 80%;
+    }
+
+    .main-image img {
+        max-width: 80%;
+        display: block;
+        margin: 0 auto;
     }
 }

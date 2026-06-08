@@ -9,18 +9,24 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-<h1>Tennis Scoreboard</h1>
+<h1>Welcome to Tennis Scoreboard</h1>
+
+<div class="scoreboard">
+    <h3>Manage your tennis matches, record results, and track rankings</h3>
+</div>
+
+
+<div class="main-image">
+    <img src="${pageContext.request.contextPath}/images/tennis-main.jpg"
+         alt="">
+</div>
 
 <div class="scoreboard">
     <a class="start-new-match" href="${pageContext.request.contextPath}/new-match">Start a new match</a>
     <a class="match-results" href="${pageContext.request.contextPath}/matches">View match results</a>
+</div>
 
-<%--    <c:if test="${sampleMatchesAvailable.get()}">--%>
-<%--        <a class="sample-matches" href="${pageContext.request.contextPath}/sample-matches">Sample matches added</a>--%>
-<%--    </c:if>--%>
-
-<%--    <a class="sample-matches" href="${pageContext.request.contextPath}/sample-matches">Add sample matches</a>--%>
-
+<div class="sample-matches-link">
     <c:choose>
         <c:when test="${sampleMatchesAvailable.get()}">
             <a class="sample-matches" href="${pageContext.request.contextPath}/sample-matches">Add sample matches</a>
