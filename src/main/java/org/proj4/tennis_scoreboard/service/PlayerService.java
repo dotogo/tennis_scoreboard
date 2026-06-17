@@ -37,9 +37,7 @@ public class PlayerService {
     private Player findOrCreate(String playerName) {
         return playerDao.findByName(playerName)
                 .orElseGet(() -> {
-                    Player newPlayer = new Player();
-                    newPlayer.setName(playerName);
-
+                    Player newPlayer = new Player(playerName);
                     try {
                         return playerDao.save(newPlayer);
 

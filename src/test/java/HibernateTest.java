@@ -21,8 +21,7 @@ public class HibernateTest {
 
     @Test
     public void testSaveAndGetPlayer() {
-        Player player = new Player();
-        player.setName("Novak Djokovic");
+        Player player = new Player("Novak Djokovic");
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -46,16 +45,11 @@ public class HibernateTest {
     @Test
     public void testSaveAndGetMatch() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Player player1 = new Player();
-            player1.setName("Novak Djokovic");
+            Player player1 = new Player("Novak Djokovic");
 
-            Player player2 = new Player();
-            player2.setName("Federer");
+            Player player2 = new Player("Federer");
 
-            Match match = new Match();
-            match.setFirstPlayer(player1);
-            match.setSecondPlayer(player2);
-            match.setWinner(player1);
+            Match match = new Match(player1, player2, player1);
 
             session.beginTransaction();
 

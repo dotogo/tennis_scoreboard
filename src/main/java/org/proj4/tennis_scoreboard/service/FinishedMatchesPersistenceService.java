@@ -35,14 +35,13 @@ public class FinishedMatchesPersistenceService {
             throw new IllegalStateException(MATCH_MUST_BE_FINISHED);
         }
 
-        Match match = new Match();
-        match.setFirstPlayer(ongoingMatch.getFirstPlayer());
-        match.setSecondPlayer(ongoingMatch.getSecondPlayer());
+        Player firstPlayer = ongoingMatch.getFirstPlayer();
+        Player secondPlayer = ongoingMatch.getSecondPlayer();
 
         Player winner = matchScoreCalculationService.getWinner(ongoingMatch)
                 .orElseThrow(() -> new IllegalStateException(FINISHED_MATCH_MUST_HAVE_WINNER));
 
-        match.setWinner(winner);
+        Match match = new Match(firstPlayer, secondPlayer, winner);
 
         matchDao.save(match);
     }

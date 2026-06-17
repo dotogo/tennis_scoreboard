@@ -40,8 +40,7 @@ public class SampleMatchesService {
         List<Player> players = new ArrayList<>();
 
         for (String playerName : playerNames) {
-            Player player = new Player();
-            player.setName(playerName);
+            Player player = new Player(playerName);
             players.add(player);
         }
         return playerDao.saveAll(players);
@@ -53,16 +52,13 @@ public class SampleMatchesService {
         List<Match> matches = new ArrayList<>();
 
         for (int i = 0; i < numberOfMatches; i++) {
-            Match match = new Match();
             List<Player> twoRandomPlayers = getTwoRandomPlayers(players);
 
             Player firstPlayer = twoRandomPlayers.get(0);
             Player secondPlayer = twoRandomPlayers.get(1);
             Player winner = getRandomPlayer(twoRandomPlayers);
 
-            match.setFirstPlayer(firstPlayer);
-            match.setSecondPlayer(secondPlayer);
-            match.setWinner(winner);
+            Match match = new Match(firstPlayer, secondPlayer, winner);
 
             matches.add(match);
         }

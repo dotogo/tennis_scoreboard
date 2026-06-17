@@ -63,7 +63,7 @@ class MatchServletTest {
 
         UUID uuid = UUID.randomUUID();
 
-        List<Player> players = List.of(new Player(), new Player());
+        List<Player> players = List.of(new Player("Player 1"), new Player("Player 2"));
 
         doReturn(players).when(playerService).findOrCreate(anyString(), anyString());
         doReturn(uuid).when(ongoingMatchesService).addMatch(any());

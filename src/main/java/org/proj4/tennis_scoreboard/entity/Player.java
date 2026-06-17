@@ -1,21 +1,21 @@
 package org.proj4.tennis_scoreboard.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "players")
+@Table(name = "players", indexes = {@Index(name = "idx_player_name", columnList = "player_name")})
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "player_name", nullable = false, unique = true)
+    @Column(name = "player_name", nullable = false, length = 50, unique = true)
     private String name;
 
+    public Player(String name) {
+        this.name = name;
+    }
 }

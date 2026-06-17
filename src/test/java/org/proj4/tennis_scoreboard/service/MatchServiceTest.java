@@ -35,7 +35,14 @@ class MatchServiceTest {
         int currentPage = 7;
         int pageSize = 3;
 
-        List<Match> allMatches = List.of(new Match(), new Match(), new Match(), new Match(), new Match(), new Match(), new Match(), new Match());
+        List<Match> allMatches = List.of(new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")));
         int totalItems = allMatches.size();
         int totalPages = 3;
 
@@ -57,7 +64,14 @@ class MatchServiceTest {
         int currentPage = 0;
         int pageSize = 0;
 
-        List<Match> allMatches = List.of(new Match(), new Match(), new Match(), new Match(), new Match(), new Match(), new Match(), new Match());
+        List<Match> allMatches = List.of(new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")),
+                new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")));
         int totalItems = allMatches.size();
         int totalPages = 2;
 
@@ -88,7 +102,9 @@ class MatchServiceTest {
     @Test
     @DisplayName("Return full Optional if player by name is found")
     void checkPaginatedMatchesIfPlayerByNameIsFound() {
-        List<Player> playersStub = List.of(new Player(), new Player(), new Player(), new Player(), new Player());
+        List<Player> playersStub = List.of(new Player("Player 1"),
+                new Player("Player 2"), new Player("Player 3"),
+                new Player("Player 4"), new Player("Player 5"));
 
         doReturn(playersStub).when(playerDao).findByNameLike(anyString());
         doReturn(5).when(matchDao).countAllByPlayers(any());

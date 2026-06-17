@@ -76,8 +76,8 @@ class MatchScoreCalculationServiceTest {
 
         @BeforeEach
         void prepareNested() {
-            firstPlayer = new Player();
-            secondPlayer = new Player();
+            firstPlayer = new Player("First Player");
+            secondPlayer = new Player("Second Player");
             ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, firstPlayerScore, secondPlayerScore);
         }
 
@@ -117,7 +117,7 @@ class MatchScoreCalculationServiceTest {
 
         @BeforeEach
         void prepareNested() {
-            ongoingMatch = new OngoingMatch(new Player(), new Player(), firstPlayerScore, secondPlayerScore);
+            ongoingMatch = new OngoingMatch(new Player("First Player"), new Player("Second Player"), firstPlayerScore, secondPlayerScore);
         }
 
         @Test
