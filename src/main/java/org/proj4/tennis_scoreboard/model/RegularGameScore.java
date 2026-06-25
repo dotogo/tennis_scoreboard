@@ -28,9 +28,8 @@ public class RegularGameScore implements TennisScore {
         if (gameFinished) {
             if (firstPlayerPoint.ordinal() > secondPlayerPoint.ordinal()) {
                 return GameStatus.FIRST_PLAYER_WON;
-            } else {
-                return GameStatus.SECOND_PLAYER_WON;
             }
+            return GameStatus.SECOND_PLAYER_WON;
         }
         return GameStatus.ONGOING;
     }
