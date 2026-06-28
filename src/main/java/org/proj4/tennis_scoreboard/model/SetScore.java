@@ -1,6 +1,10 @@
 package org.proj4.tennis_scoreboard.model;
 
 public class SetScore implements TennisScore {
+    private static final int GAMES_FOR_TIEBREAK = 6;
+    private static final int GAMES_TO_WIN_SET = 6;
+    private static final int MIN_GAME_DIFFERENCE = 2;
+
     private int firstPlayerGames;
     private int secondPlayerGames;
     private boolean setFinished;
@@ -92,7 +96,7 @@ public class SetScore implements TennisScore {
 
     private boolean isTieBreakStarting() {
         if (isRegularGame()) {
-            return firstPlayerGames == 6 && secondPlayerGames == 6;
+            return firstPlayerGames == GAMES_FOR_TIEBREAK && secondPlayerGames == GAMES_FOR_TIEBREAK;
         }
         return false;
     }
@@ -102,7 +106,7 @@ public class SetScore implements TennisScore {
     }
 
     private boolean isSetFinishedOnRegularGame(int winnerPoints, int opponentPoints) {
-        return winnerPoints >= 6 && (winnerPoints - opponentPoints) >= 2;
+        return winnerPoints >= GAMES_TO_WIN_SET && (winnerPoints - opponentPoints) >= MIN_GAME_DIFFERENCE;
     }
 
     private boolean isRegularGame() {

@@ -1,6 +1,9 @@
 package org.proj4.tennis_scoreboard.model;
 
 public class TieBreakScore implements TennisScore {
+    private static final int MIN_TIEBREAK_POINTS = 6;
+    private static final int MIN_TIEBREAK_LEAD = 1;
+
     private int firstPlayerPoint;
     private int secondPlayerPoint;
     private boolean tieBreakFinished;
@@ -39,6 +42,6 @@ public class TieBreakScore implements TennisScore {
     }
 
     private boolean isTieBreakWillBeFinished(int winnerTieBreak, int opponentTieBreak) {
-        return (winnerTieBreak >= 6) && ((winnerTieBreak - opponentTieBreak) >= 1);
+        return (winnerTieBreak >= MIN_TIEBREAK_POINTS) && ((winnerTieBreak - opponentTieBreak) >= MIN_TIEBREAK_LEAD);
     }
 }
