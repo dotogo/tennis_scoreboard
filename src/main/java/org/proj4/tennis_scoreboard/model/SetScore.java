@@ -1,5 +1,7 @@
 package org.proj4.tennis_scoreboard.model;
 
+import org.proj4.tennis_scoreboard.dto.SetScoreDto;
+
 public class SetScore implements TennisScore {
     private static final int GAMES_FOR_TIEBREAK = 6;
     private static final int GAMES_TO_WIN_SET = 6;
@@ -65,6 +67,19 @@ public class SetScore implements TennisScore {
             }
         }
         return GameStatus.ONGOING;
+    }
+
+    protected SetScoreDto getSetScoreDto() {
+        String firstPlayerWonGames = String.valueOf(firstPlayerGames);
+        String secondPlayerWonGames = String.valueOf(secondPlayerGames);
+
+        if (isRegularGame()) {
+            RegularGameScore regularGameScore = (RegularGameScore) currentGame;
+            return new SetScoreDto(firstPlayerWonGames, secondPlayerWonGames, regularGameScore.getGameScoreDto());
+        }
+
+        TieBreakScore tieBreakScore = (TieBreakScore) currentGame;
+        return new SetScoreDto(firstPlayerWonGames, secondPlayerWonGames, tieBreakScore.getGameScoreDto());
     }
 
     private void finishSetIfPlayerWon(GameStatus gameStatus, int winnerPoints, int opponentPoints) {
