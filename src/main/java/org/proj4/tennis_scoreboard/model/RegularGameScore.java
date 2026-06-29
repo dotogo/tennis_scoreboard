@@ -1,5 +1,6 @@
 package org.proj4.tennis_scoreboard.model;
 
+import org.proj4.tennis_scoreboard.dto.GameScoreDto;
 import org.proj4.tennis_scoreboard.entity.Point;
 
 public class RegularGameScore implements TennisScore {
@@ -32,6 +33,10 @@ public class RegularGameScore implements TennisScore {
             return GameStatus.SECOND_PLAYER_WON;
         }
         return GameStatus.ONGOING;
+    }
+
+    protected GameScoreDto getGameScoreDto() {
+        return new GameScoreDto(firstPlayerPoint.getValue(), secondPlayerPoint.getValue());
     }
 
     protected boolean isDeuce() {

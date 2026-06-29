@@ -1,5 +1,7 @@
 package org.proj4.tennis_scoreboard.model;
 
+import org.proj4.tennis_scoreboard.dto.GameScoreDto;
+
 public class TieBreakScore implements TennisScore {
     private static final int MIN_TIEBREAK_POINTS = 6;
     private static final int MIN_TIEBREAK_LEAD = 1;
@@ -31,6 +33,10 @@ public class TieBreakScore implements TennisScore {
             return GameStatus.SECOND_PLAYER_WON;
         }
         return GameStatus.ONGOING;
+    }
+
+    protected GameScoreDto getGameScoreDto() {
+        return new GameScoreDto(String.valueOf(firstPlayerPoint), String.valueOf(secondPlayerPoint));
     }
 
     private int addPoint(int winnerTieBreak, int opponentTieBreak) {
