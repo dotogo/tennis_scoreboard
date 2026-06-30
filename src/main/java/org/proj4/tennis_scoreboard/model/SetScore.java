@@ -75,11 +75,11 @@ public class SetScore implements TennisScore {
 
         if (isRegularGame()) {
             RegularGameScore regularGameScore = (RegularGameScore) currentGame;
-            return new SetScoreDto(firstPlayerWonGames, secondPlayerWonGames, regularGameScore.getGameScoreDto());
+            return new SetScoreDto(firstPlayerWonGames, secondPlayerWonGames, regularGameScore.getGameScoreDto(), false);
         }
 
         TieBreakScore tieBreakScore = (TieBreakScore) currentGame;
-        return new SetScoreDto(firstPlayerWonGames, secondPlayerWonGames, tieBreakScore.getGameScoreDto());
+        return new SetScoreDto(firstPlayerWonGames, secondPlayerWonGames, tieBreakScore.getGameScoreDto(), true);
     }
 
     private void finishSetIfPlayerWon(GameStatus gameStatus, int winnerPoints, int opponentPoints) {

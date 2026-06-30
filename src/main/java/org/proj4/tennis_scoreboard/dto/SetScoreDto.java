@@ -1,4 +1,4 @@
 package org.proj4.tennis_scoreboard.dto;
 
-public record SetScoreDto(String firstPlayerGames, String secondPlayerGames, GameScoreDto gameScoreDto) {
+public record SetScoreDto(String firstPlayerGames, String secondPlayerGames, GameScoreDto gameScoreDto, boolean tieBreak) {
 }
