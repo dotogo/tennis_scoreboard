@@ -39,10 +39,6 @@ public class RegularGameScore implements TennisScore {
         return new GameScoreDto(firstPlayerPoint.getValue(), secondPlayerPoint.getValue());
     }
 
-    protected boolean isDeuce() {
-        return Point.FORTY.equals(firstPlayerPoint) && Point.FORTY.equals(secondPlayerPoint);
-    }
-
     private boolean isGameFinishedAfterDeuce(Point currentWinnerPoints) {
         return Point.AD.equals(currentWinnerPoints);
     }

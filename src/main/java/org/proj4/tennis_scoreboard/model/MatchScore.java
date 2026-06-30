@@ -1,5 +1,7 @@
 package org.proj4.tennis_scoreboard.model;
 
+import org.proj4.tennis_scoreboard.dto.MatchScoreDto;
+
 public class MatchScore implements TennisScore {
     private static final int SETS_TO_WIN = 2;
 
@@ -48,6 +50,14 @@ public class MatchScore implements TennisScore {
             return GameStatus.SECOND_PLAYER_WON;
         }
         return GameStatus.ONGOING;
+    }
+
+    protected MatchScoreDto getMatchScoreDto() {
+        String firstPlayerWonSets = String.valueOf(firstPlayerSets);
+        String secondPlayerWonSets = String.valueOf(secondPlayerSets);
+        SetScore setScore = (SetScore) currentSetScore;
+
+        return new MatchScoreDto(firstPlayerWonSets, secondPlayerWonSets, setScore.getSetScoreDto());
     }
 
     private int calculatePlayerSets(GameStatus gameStatus, int pointWinnerSets) {
