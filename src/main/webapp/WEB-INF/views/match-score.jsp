@@ -18,7 +18,7 @@
 
 <div class="match-score">
 
-    <c:if test="${not empty match}">
+    <c:if test="${not empty matchScoreDto and not empty firstPlayer and not empty secondPlayer}">
         <table class="score-table">
             <tr>
                 <th>Player</th>
@@ -28,43 +28,43 @@
                 <th>Action</th>
             </tr>
             <tr>
-                <td>${match.firstPlayer.name}</td>
-                <td>${match.firstPlayerScore.sets}</td>
-                <td>${match.firstPlayerScore.games}</td>
+                <td>${firstPlayer.name}</td>
+                <td>${matchScoreDto.firstPlayerSets}</td>
+                <td>${matchScoreDto.firstPlayerGames}</td>
                 <td>
                     <c:choose>
-                        <c:when test="${match.firstPlayerScore.tieBreak > 0}">
-                            ${match.firstPlayerScore.tieBreak} (TB)
+                        <c:when test="${matchScoreDto.tieBreak}">
+                            ${matchScoreDto.firstPlayerPoints} (TB)
                         </c:when>
                         <c:otherwise>
-                            ${match.firstPlayerScore.points.value}
+                            ${matchScoreDto.firstPlayerPoints}
                         </c:otherwise>
                     </c:choose>
                 </td>
                 <td>
                     <form class="action-form" method="post" action="<c:url value='/match-score?uuid=${param.uuid}'/>">
-                        <input type="hidden" name="point-winner" value="player1">
+                        <input type="hidden" name="point-winner" value="${firstPlayer.id}">
                         <button type="submit" class="action-button">+ Point</button>
                     </form>
                 </td>
             </tr>
             <tr>
-                <td>${match.secondPlayer.name}</td>
-                <td>${match.secondPlayerScore.sets}</td>
-                <td>${match.secondPlayerScore.games}</td>
+                <td>${secondPlayer.name}</td>
+                <td>${matchScoreDto.secondPlayerSets}</td>
+                <td>${matchScoreDto.secondPlayerGames}</td>
                 <td>
                     <c:choose>
-                        <c:when test="${match.secondPlayerScore.tieBreak > 0}">
-                            ${match.secondPlayerScore.tieBreak} (TB)
+                        <c:when test="${matchScoreDto.tieBreak}">
+                            ${matchScoreDto.secondPlayerPoints} (TB)
                         </c:when>
                         <c:otherwise>
-                            ${match.secondPlayerScore.points.value}
+                            ${matchScoreDto.secondPlayerPoints}
                         </c:otherwise>
                     </c:choose>
                 </td>
                 <td>
                     <form class="action-form" method="post" action="<c:url value='/match-score?uuid=${param.uuid}'/>">
-                        <input type="hidden" name="point-winner" value="player2">
+                        <input type="hidden" name="point-winner" value="${secondPlayer.id}">
                         <button type="submit" class="action-button">+ Point</button>
                     </form>
                 </td>
@@ -72,7 +72,7 @@
         </table>
     </c:if>
 
-    <c:if test="${empty match}">
+    <c:if test="${empty matchScoreDto or empty firstPlayer or empty secondPlayer}">
         <p>Match not found or completed.</p>
         <a href="<c:url value='/'/>">Back to main page</a>
     </c:if>

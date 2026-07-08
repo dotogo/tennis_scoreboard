@@ -18,9 +18,9 @@
 <h1>Final score</h1>
 
 <div class="scoreboard">
-    <c:if test="${not empty match}">
-        <h4>${match.firstPlayer.name}: ${match.firstPlayerScore.sets}</h4>
-        <h4>${match.secondPlayer.name}: ${match.secondPlayerScore.sets}</h4>
+    <c:if test="${not empty matchScoreDto and not empty firstPlayer and not empty secondPlayer}">
+        <h4>${firstPlayer.name}: ${matchScoreDto.firstPlayerSets}</h4>
+        <h4>${secondPlayer.name}: ${matchScoreDto.secondPlayerSets}</h4>
 
         <div class="final-image">
             <img src="${pageContext.request.contextPath}/images/final-score.jpg"
@@ -30,11 +30,11 @@
         <h2>The match is over</h2>
         <h2>Winner:
             <c:choose>
-                <c:when test="${match.firstPlayerScore.sets > match.secondPlayerScore.sets}">
-                    ${match.firstPlayer.name}
+                <c:when test="${matchScoreDto.firstPlayerSets > matchScoreDto.secondPlayerSets}">
+                    ${firstPlayer.name}
                 </c:when>
                 <c:otherwise>
-                    ${match.secondPlayer.name}
+                    ${secondPlayer.name}
                 </c:otherwise>
             </c:choose>
         </h2>

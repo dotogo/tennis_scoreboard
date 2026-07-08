@@ -7,9 +7,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.proj4.tennis_scoreboard.dto.MatchScoreDto;
 import org.proj4.tennis_scoreboard.util.Validator;
-import org.proj4.tennis_scoreboard.entity.OngoingMatch;
-import org.proj4.tennis_scoreboard.entity.PlayerScore;
+import org.proj4.tennis_scoreboard.model.OngoingMatch;
 import org.proj4.tennis_scoreboard.service.FinishedMatchesPersistenceService;
 import org.proj4.tennis_scoreboard.service.MatchScoreCalculationService;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
@@ -21,9 +21,12 @@ import java.util.UUID;
 @WebServlet("/match-score")
 public class MatchScoreServlet extends HttpServlet {
     private static final String PARAM_UUID = "uuid";
-    private static final String ATTR_MATCH = "match";
+    private static final String ATTR_MATCH_SCORE_DTO = "matchScoreDto";
+    private static final String ATTR_FIRST_PLAYER = "firstPlayer";
+    private static final String ATTR_SECOND_PLAYER = "secondPlayer";
     private static final String PARAM_POINT_WINNER = "point-winner";
     private static final String INVALID_UUID = "Invalid UUID";
+    private static final String INVALID_PLAYER_ID = "Invalid player ID";
     private static final String ERROR_GETTING_MATCH = "Something went wrong while getting ongoing match or a match with\n" +
                                                       "UUID = %s does not exist";
     private static final String ATTR_ERROR_MESSAGE = "error_message";
@@ -78,7 +81,12 @@ public class MatchScoreServlet extends HttpServlet {
         Optional<OngoingMatch> matchOptional = ongoingMatchesService.getMatch(uuid);
 
         if (matchOptional.isPresent()) {
-            req.setAttribute(ATTR_MATCH, matchOptional.get());
+            OngoingMatch ongoingMatch = matchOptional.get();
+            MatchScoreDto matchScoreDto = ongoingMatch.getMatchScoreDto();
+
+            req.setAttribute(ATTR_MATCH_SCORE_DTO, matchScoreDto);
+            req.setAttribute(ATTR_FIRST_PLAYER, ongoingMatch.getFirstPlayer());
+            req.setAttribute(ATTR_SECOND_PLAYER, ongoingMatch.getSecondPlayer());
             req.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(req, resp);
         }
 
@@ -112,22 +120,31 @@ public class MatchScoreServlet extends HttpServlet {
         }
 
         String pointWinner = req.getParameter(PARAM_POINT_WINNER);
+        int playerId;
 
-        matchScoreCalculationService.updateMatchScore(match, pointWinner);
+        try {
+            playerId = Integer.parseInt(pointWinner);
+        } catch (NumberFormatException e) {
+            sendErrorForward(req, resp, INVALID_PLAYER_ID);
+            return;
+        }
 
-        PlayerScore firstPlayerScore = match.getFirstPlayerScore();
-        PlayerScore secondPlayerScore = match.getSecondPlayerScore();
+        match.addPoint(playerId);
 
-        if (matchScoreCalculationService.isFinishedMatch(firstPlayerScore, secondPlayerScore)) {
+        if (match.isFinished()) {
             finishedMatchesPersistenceService.persistMatch(match);
             ongoingMatchesService.deleteMatch(uuid);
 
-            req.setAttribute(ATTR_MATCH, match);
+            req.setAttribute(ATTR_MATCH_SCORE_DTO, match.getMatchScoreDto());
+            req.setAttribute(ATTR_FIRST_PLAYER, match.getFirstPlayer());
+            req.setAttribute(ATTR_SECOND_PLAYER, match.getSecondPlayer());
             req.getRequestDispatcher("/WEB-INF/views/final-score.jsp").forward(req, resp);
             return;
         }
 
-        req.setAttribute(ATTR_MATCH, match);
+        req.setAttribute(ATTR_MATCH_SCORE_DTO, match.getMatchScoreDto());
+        req.setAttribute(ATTR_FIRST_PLAYER, match.getFirstPlayer());
+        req.setAttribute(ATTR_SECOND_PLAYER, match.getSecondPlayer());
         req.getRequestDispatcher("/WEB-INF/views/match-score.jsp").forward(req, resp);
     }
 

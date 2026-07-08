@@ -2,7 +2,7 @@ package org.proj4.tennis_scoreboard.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import org.proj4.tennis_scoreboard.entity.OngoingMatch;
+import org.proj4.tennis_scoreboard.model.OngoingMatch;
 
 import java.util.Optional;
 import java.util.UUID;

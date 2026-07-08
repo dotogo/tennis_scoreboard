@@ -1,11 +1,15 @@
 package org.proj4.tennis_scoreboard.model;
 
+import lombok.Getter;
+import org.proj4.tennis_scoreboard.dto.MatchScoreDto;
 import org.proj4.tennis_scoreboard.exception.InvalidParameterException;
 
 import java.util.Optional;
 
 public class OngoingMatch {
+    @Getter
     private final OngoingPlayer firstPlayer;
+    @Getter
     private final OngoingPlayer secondPlayer;
     private final MatchScore matchScore;
 
@@ -42,4 +46,9 @@ public class OngoingMatch {
             throw new InvalidParameterException("Invalid player id: " + playerId);
         }
     }
+
+    public MatchScoreDto getMatchScoreDto() {
+        return matchScore.getMatchScoreDto();
+    }
+
 }

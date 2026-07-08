@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.proj4.tennis_scoreboard.entity.*;
+import org.proj4.tennis_scoreboard.model.MatchScore;
+import org.proj4.tennis_scoreboard.model.OngoingMatch;
+import org.proj4.tennis_scoreboard.model.OngoingPlayer;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 import org.proj4.tennis_scoreboard.service.PlayerService;
 
@@ -89,8 +92,11 @@ public class MatchServlet extends HttpServlet {
         List<Player> players = playerService.findOrCreate(firstPlayerName, secondPlayerName);
         Player first = players.get(0);
         Player second = players.get(1);
+        OngoingPlayer firstPlayer = OngoingPlayer.fromPlayer(first);
+        OngoingPlayer secondPlayer = OngoingPlayer.fromPlayer(second);
 
-        OngoingMatch ongoingMatch = new OngoingMatch(first, second, new PlayerScore(), new PlayerScore());
+        OngoingMatch ongoingMatch = new OngoingMatch(firstPlayer, secondPlayer, new MatchScore());
+
         UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
 
         resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
