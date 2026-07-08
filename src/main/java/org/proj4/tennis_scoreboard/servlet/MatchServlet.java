@@ -99,7 +99,7 @@ public class MatchServlet extends HttpServlet {
 
         UUID uuid = ongoingMatchesService.addMatch(ongoingMatch);
 
-        resp.sendRedirect("/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
+        resp.sendRedirect(req.getContextPath() + "/match-score?uuid=" + URLEncoder.encode(uuid.toString(), StandardCharsets.UTF_8));
     }
 
     @Override

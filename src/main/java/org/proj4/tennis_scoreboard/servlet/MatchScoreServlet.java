@@ -11,7 +11,6 @@ import org.proj4.tennis_scoreboard.dto.MatchScoreDto;
 import org.proj4.tennis_scoreboard.util.Validator;
 import org.proj4.tennis_scoreboard.model.OngoingMatch;
 import org.proj4.tennis_scoreboard.service.FinishedMatchesPersistenceService;
-import org.proj4.tennis_scoreboard.service.MatchScoreCalculationService;
 import org.proj4.tennis_scoreboard.service.OngoingMatchesService;
 
 import java.io.IOException;
@@ -32,7 +31,6 @@ public class MatchScoreServlet extends HttpServlet {
     private static final String ATTR_ERROR_MESSAGE = "error_message";
 
     private OngoingMatchesService ongoingMatchesService;
-    private MatchScoreCalculationService matchScoreCalculationService;
     private FinishedMatchesPersistenceService finishedMatchesPersistenceService;
 
     public MatchScoreServlet() {
@@ -40,11 +38,9 @@ public class MatchScoreServlet extends HttpServlet {
     }
 
     public MatchScoreServlet(OngoingMatchesService ongoingMatchesService,
-                             MatchScoreCalculationService matchScoreCalculationService,
                              FinishedMatchesPersistenceService finishedMatchesPersistenceService ) {
 
         this.ongoingMatchesService = ongoingMatchesService;
-        this.matchScoreCalculationService = matchScoreCalculationService;
         this.finishedMatchesPersistenceService = finishedMatchesPersistenceService;
     }
 
@@ -56,10 +52,6 @@ public class MatchScoreServlet extends HttpServlet {
 
         if (ongoingMatchesService == null) {
             this.ongoingMatchesService = (OngoingMatchesService) servletContext.getAttribute("ongoingMatchesService");
-        }
-
-        if (matchScoreCalculationService == null) {
-            this.matchScoreCalculationService = (MatchScoreCalculationService) servletContext.getAttribute("matchScoreCalculationService");
         }
 
         if (finishedMatchesPersistenceService == null) {
@@ -115,7 +107,7 @@ public class MatchScoreServlet extends HttpServlet {
         }
 
         if (match == null) {
-            resp.sendRedirect("/matches");
+            resp.sendRedirect(req.getContextPath() + "/matches");
             return;
         }
 

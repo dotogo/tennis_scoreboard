@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface MatchDao extends Dao<Match> {
 
-    List<Match> getAllMatches(int page, int pageSize);
+    List<Match> getAllMatches(int pageSize, int offset);
 
-    List<Match> findByPlayers(List<Player> players, int page, int pageSize);
+    List<Match> findByPlayers(List<Player> players, int pageSize, int offset);
 
     int countAll();
 

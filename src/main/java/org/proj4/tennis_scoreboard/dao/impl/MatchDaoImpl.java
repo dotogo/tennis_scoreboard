@@ -51,10 +51,8 @@ public class MatchDaoImpl implements MatchDao {
         }
     }
 
-    public List<Match> getAllMatches(int page, int pageSize) {
+    public List<Match> getAllMatches(int pageSize, int offset) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
-            int offset = (page - 1) * pageSize;
 
             String hql = """
                     select m from Match m
@@ -75,9 +73,8 @@ public class MatchDaoImpl implements MatchDao {
         }
     }
 
-    public List<Match> findByPlayers(List<Player> players, int page, int pageSize) {
+    public List<Match> findByPlayers(List<Player> players, int pageSize, int offset) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            int offset = (page - 1) * pageSize;
 
             String hql = """
                         select m from Match m

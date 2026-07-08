@@ -18,14 +18,19 @@ public class AppContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        MatchService matchService = new MatchService();
-        OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
-        MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
-        FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
-        SampleMatchesService sampleMatchesService = new SampleMatchesService();
-        PlayerService playerService = new PlayerService();
+        HibernateUtil.getSessionFactory();
+
         PlayerDao playerDao = new PlayerDaoImpl();
         MatchDao matchDao = new MatchDaoImpl();
+
+        PlayerService playerService = new PlayerService(playerDao);
+        MatchService matchService = new MatchService(matchDao, playerDao);
+        FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService(matchDao, playerDao);
+        SampleMatchesService sampleMatchesService = new SampleMatchesService(matchDao, playerDao);
+
+        MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+        OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
+
         AtomicBoolean canLaunch = new AtomicBoolean(true);
 
         ServletContext context = sce.getServletContext();
@@ -35,8 +40,6 @@ public class AppContextListener implements ServletContextListener {
         context.setAttribute("finishedMatchesPersistenceService", finishedMatchesPersistenceService);
         context.setAttribute("sampleMatchesService", sampleMatchesService);
         context.setAttribute("playerService", playerService);
-        context.setAttribute("playerDao", playerDao);
-        context.setAttribute("matchDao", matchDao);
         context.setAttribute("sampleMatchesAvailable", canLaunch);
     }
 

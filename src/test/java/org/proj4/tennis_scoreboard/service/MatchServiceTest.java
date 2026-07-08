@@ -45,8 +45,9 @@ class MatchServiceTest {
                 new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")));
         int totalItems = allMatches.size();
         int totalPages = 3;
+        int offset = (currentPage - 1) * pageSize;
 
-        doReturn(allMatches).when(matchDao).getAllMatches(currentPage, pageSize);
+        doReturn(allMatches).when(matchDao).getAllMatches(pageSize, offset);
         doReturn(totalItems).when(matchDao).countAll();
 
         PaginatedResult<MatchDto> result = matchService.getMatchesPaginated(currentPage, pageSize);
@@ -74,8 +75,9 @@ class MatchServiceTest {
                 new Match(new Player("Name 1"), new Player("Name 2"), new Player("Name 1")));
         int totalItems = allMatches.size();
         int totalPages = 2;
+        int offset = (currentPage - 1) * pageSize;
 
-        doReturn(allMatches).when(matchDao).getAllMatches(1, 5);
+        doReturn(allMatches).when(matchDao).getAllMatches(5, offset);
         doReturn(totalItems).when(matchDao).countAll();
 
         PaginatedResult<MatchDto> result = matchService.getMatchesPaginated(currentPage, pageSize);

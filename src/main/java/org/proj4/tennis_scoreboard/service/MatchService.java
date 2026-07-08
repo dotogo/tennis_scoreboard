@@ -36,7 +36,9 @@ public class MatchService {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        List<Match> allMatches = matchDao.getAllMatches(currentPage, pageSize);
+        int offset = (currentPage - 1) * pageSize;
+
+        List<Match> allMatches = matchDao.getAllMatches(pageSize, offset);
         List<MatchDto> items = MatchMapper.INSTANCE.toDtoList(allMatches);
 
         int totalItems = matchDao.countAll();
@@ -63,7 +65,9 @@ public class MatchService {
             return Optional.empty();
         }
 
-        matches = matchDao.findByPlayers(players, currentPage, pageSize);
+        int offset = (currentPage - 1) * pageSize;
+
+        matches = matchDao.findByPlayers(players, pageSize, offset);
         totalItems = matchDao.countAllByPlayers(players);
 
         List<MatchDto> items = MatchMapper.INSTANCE.toDtoList(matches);
