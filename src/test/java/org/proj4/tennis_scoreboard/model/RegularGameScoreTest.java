@@ -28,7 +28,10 @@ public class RegularGameScoreTest {
         regularGameScore.addPointFirstPlayer();
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
 
-        assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("15");
+        assertAll(
+                () -> assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("15"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
+        );
     }
 
     @Test
@@ -37,7 +40,10 @@ public class RegularGameScoreTest {
         regularGameScore.addPointSecondPlayer();
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
 
-        assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("15");
+        assertAll(
+                () -> assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("15"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
+        );
     }
 
     @Test
@@ -47,7 +53,10 @@ public class RegularGameScoreTest {
         regularGameScore.addPointFirstPlayer();
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
 
-        assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("30");
+        assertAll(
+                () -> assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("30"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
+        );
     }
 
     @Test
@@ -57,7 +66,10 @@ public class RegularGameScoreTest {
         regularGameScore.addPointSecondPlayer();
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
 
-        assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("30");
+        assertAll(
+                () -> assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("30"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
+        );
     }
 
     @Test
@@ -68,7 +80,10 @@ public class RegularGameScoreTest {
         regularGameScore.addPointFirstPlayer();
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
 
-        assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("40");
+        assertAll(
+                () -> assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("40"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
+        );
     }
 
     @Test
@@ -79,7 +94,10 @@ public class RegularGameScoreTest {
         regularGameScore.addPointSecondPlayer();
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
 
-        assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("40");
+        assertAll(
+                () -> assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("40"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
+        );
     }
 
     @ParameterizedTest(name = "{0}")
@@ -136,7 +154,8 @@ public class RegularGameScoreTest {
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
         assertAll(
                 () -> assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("AD"),
-                () -> assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("40")
+                () -> assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("40"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
         );
     }
 
@@ -150,7 +169,8 @@ public class RegularGameScoreTest {
         GameScoreDto gameScoreDto = regularGameScore.getGameScoreDto();
         assertAll(
                 () -> assertThat(gameScoreDto.secondPlayerScore()).isEqualTo("AD"),
-                () -> assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("40")
+                () -> assertThat(gameScoreDto.firstPlayerScore()).isEqualTo("40"),
+                () -> assertThat(regularGameScore.getStatus()).isEqualTo(GameStatus.ONGOING)
         );
     }
 
