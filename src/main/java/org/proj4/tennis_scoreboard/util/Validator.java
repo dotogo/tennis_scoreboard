@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 @UtilityClass
 public class Validator {
     private static final int MIN_NAME_LENGTH = 2;
-    private static final int MAX_NAME_LENGTH = 32;
+    private static final int MAX_NAME_LENGTH = 50;
     private static final int UUID_LENGTH = 36;
 
     private static final String ENGLISH_PROFANITY_WORDS = "en_profanity_words.txt";
