@@ -67,6 +67,7 @@ class MatchServletTest {
 
         doReturn(players).when(playerService).findOrCreate(anyString(), anyString());
         doReturn(uuid).when(ongoingMatchesService).addMatch(any());
+        doReturn("").when(req).getContextPath();
 
         matchServlet.doPost(req, resp);
 

@@ -28,7 +28,7 @@ public class AppContextListener implements ServletContextListener {
         FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService(matchDao, playerDao);
         SampleMatchesService sampleMatchesService = new SampleMatchesService(matchDao, playerDao);
 
-        MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+//        MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
         OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
 
         AtomicBoolean canLaunch = new AtomicBoolean(true);
@@ -36,7 +36,7 @@ public class AppContextListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
         context.setAttribute("matchService", matchService);
         context.setAttribute("ongoingMatchesService", ongoingMatchesService);
-        context.setAttribute("matchScoreCalculationService", matchScoreCalculationService);
+//        context.setAttribute("matchScoreCalculationService", matchScoreCalculationService);
         context.setAttribute("finishedMatchesPersistenceService", finishedMatchesPersistenceService);
         context.setAttribute("sampleMatchesService", sampleMatchesService);
         context.setAttribute("playerService", playerService);
